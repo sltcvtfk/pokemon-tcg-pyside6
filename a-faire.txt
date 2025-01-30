@@ -1,0 +1,30 @@
+
+interface_graphique (
+
+
+)
+
+Stockage_User(
+    Json
+)
+
+authentification (
+
+)
+
+toolbar (
+    pokedex
+    ouvrir booster
+    compte
+) 
+
+
+pokedex (
+        recherche (
+            par type
+            par génération
+            par nom
+        )
+        voir le nb de pokémon de l'user
+        voir cartes manquantes (optionnel)
+    )
