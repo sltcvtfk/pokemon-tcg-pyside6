@@ -63,7 +63,7 @@ class Searchbar(QWidget) :
         """ Réalise la recherche en fonction du texte entrée
         """
 
-        filtered = []
+        self.filtered = []
 
         text = self.lineEdit.text()
         text = text.lower() 
@@ -79,6 +79,15 @@ class Searchbar(QWidget) :
             for pokemon in contenu :
                 p_type = [t.lower() for t in pokemon['type']]
                 if text in p_type :
-                    filtered.append(pokemon['id'])
-                    
+                    self.filtered.append(pokemon['id'])
+        else : 
             
+            for pokemon in contenu :
+                p_name_en = [t.lower() for t in pokemon['name']['english']]
+                p_name_fr = [t.lower() for t in pokemon['name']['french']]
+                for poke_en in p_name_en :
+                    if poke_en.startwith(text) :
+                        self.filtered.append(pokemon['id'])
+                for poke_fr in p_name_fr : 
+                    if poke_fr.startwith(text) :
+                        self.filtered.append(pokemon['id'])

@@ -49,19 +49,15 @@ class MyWindow(QMainWindow):
         self.scene = Scene(0,0,325,500)
         view = QGraphicsView(self.scene)
         
-        
-        
         self.searchBar = Searchbar()
         self.searchBar.setFixedWidth(200)
+        
         
         self.layout = QHBoxLayout()
         self.layout.addWidget(view)
         self.layout.addWidget(self.searchBar)
         
         centralWidget.setLayout(self.layout)
-
-
-
 
 app = QApplication()
 
