@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QGraphicsScene, QGraphicsView, QApplication, QMainWindow, QWidget ,QHBoxLayout, QPushButton, QLabel
+from PySide6.QtWidgets import QGraphicsScene, QGraphicsView, QApplication, QMainWindow, QWidget ,QHBoxLayout, QPushButton, QLabel, QGridLayout
 from PySide6.QtGui import QBrush, QPen, QColor, QCloseEvent, QPainter, QPaintEvent, QPixmap, QImage
 from PySide6.QtWidgets import (
     QApplication,
@@ -49,7 +49,10 @@ class MyWindow(QMainWindow):
         self.scene = Scene(0,0,325,500)
         view = QGraphicsView(self.scene)
         
+        
+        
         self.searchBar = Searchbar()
+        self.searchBar.setFixedWidth(200)
         
         self.layout = QHBoxLayout()
         self.layout.addWidget(view)
@@ -60,10 +63,12 @@ class MyWindow(QMainWindow):
 
 
 
-
 app = QApplication()
 
 myWindow = MyWindow()
+
+myWindow.resize(800, 600)
+
 
 myWindow.show()
 app.exec()

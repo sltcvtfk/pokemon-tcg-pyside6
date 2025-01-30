@@ -1,17 +1,26 @@
-from PySide6.QtWidgets import QGraphicsScene, QGraphicsView, QApplication, QMainWindow, QWidget ,QHBoxLayout, QPushButton, QLabel, QLineEdit
-from PySide6.QtGui import QBrush, QPen, QColor, QCloseEvent, QPainter, QPaintEvent, QPixmap, QImage
-from PySide6.QtWidgets import (
-    QApplication,
-    QGraphicsRectItem,
-    QGraphicsScene,
-    QGraphicsView,
-    QGraphicsItem
-)
-from PySide6.QtNetwork import (QNetworkAccessManager )
-import requests
+from PySide6.QtWidgets import  QWidget , QLabel, QLineEdit, QVBoxLayout
+
 import json
 
-
+TYPES = { "eau" : "water",
+    "feu" : "fire",
+    "plante" : "grass",
+    "combat" : "fighting",
+    "normal" : "normal",
+    "glace" : "ice",
+    "insecte" : "bug",
+    "poison" : "poison",
+    "dragon" : "dragon",
+    "acier" : "steel",
+    "psy" : "psychic",
+    "sol" : "ground",
+    "ténèbres" : "dark",
+    "roche" : "rock",
+    "spectre" : "ghost",
+    "fée" : "fairy",
+    "vol" : "flying",
+    "électrik" : "electric"
+}
 
 class Searchbar(QWidget) :
     """ Barre de recherche
@@ -22,11 +31,17 @@ class Searchbar(QWidget) :
     
     def __init__(self, parent=None) :
         super().__init__(parent)
-        #search bar initialisation
-        self.label = QLabel()
-        self.closeButton = QPushButton()
-        self.buttons = []
         
+        #search bar initialisation
+        
+        self.layout:QVBoxLayout = QVBoxLayout()
+        self.setLayout(self.layout)
+        
+        self.lineEdit = QLineEdit(self)
+        
+        self.nameLabel = QLabel(self)
+        
+        self.lineEdit.textChanged.connect(self.filterSearch)
         
         self.initUI()
         
@@ -35,14 +50,35 @@ class Searchbar(QWidget) :
         """
         
         #initialisation des Widgets
-        self.lineEdit = QLineEdit()
-        self.searchButton = QPushButton()
         
+        self.layout.addWidget(self.nameLabel)
         
-        self.buttons.append(self.closeButton)
-        self.buttons.append(self.searchButton)
+        self.layout.addWidget(self.lineEdit)
         
-        #création du layout
-        layout = QHBoxLayout
-        layout.addWidget(self.searchButton)
-        layout.addWidget(self.lineEdit)
+        self.layout.addStretch()
+        
+        self.nameLabel.setText('Type your search :')
+        
+    def filterSearch(self) :
+        """ Réalise la recherche en fonction du texte entrée
+        """
+
+        filtered = []
+
+        text = self.lineEdit.text()
+        text = text.lower() 
+        
+        if text in TYPES :
+            text = TYPES[text]
+            
+        if text in TYPES.values() :
+            
+            with open('pokedex.json') as f:
+                contenu = json.load(f)
+                
+            for pokemon in contenu :
+                p_type = [t.lower() for t in pokemon['type']]
+                if text in p_type :
+                    filtered.append(pokemon['id'])
+                    
+            
