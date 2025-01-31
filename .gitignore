@@ -1,3 +1,4 @@
 à faire
 .venv
-
+__pycache__
+.gitignore
