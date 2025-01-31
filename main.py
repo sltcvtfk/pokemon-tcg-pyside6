@@ -32,13 +32,24 @@ class Scene(QGraphicsScene):
         self.rect.setPen(pen)
         self.addItem(self.rect)
         
-    #def start_booster(self):
-        
-        
+    #def start_booster(self):     
     #def setColor(self, *args):
-     #   brush = QBrush(QColor())
+    #brush = QBrush(QColor())
     
-    
+class Button_Open(QPushButton):
+    def __init__(self, parent=None):
+        super().__init__()
+        self.setGeometry(175, 570, 50, 50)
+        self.setText("Open!")
+        self.setFixedSize(50, 50)
+        self.compte = 0   
+        
+    def ajoute(self):
+        self.compte += 1
+        return self.compte
+        
+        
+
 
 class MyWindow(QMainWindow):
     def __init__(self):
@@ -46,21 +57,16 @@ class MyWindow(QMainWindow):
         centralWidget = QWidget()
         self.setCentralWidget(centralWidget)
         self.scene = Scene(0,0,400,700)
-        
-        # self.scene.addPixmap(charge_carte_image(pokemon_id))
-        # self.scene.addPixmap(charge_pokemon_image(pokemon_id))
-        # booster = self.scene.addPixmap(affiche_booster())
-        pokemon_id = random.randint(FIRST_POKEMON, LAST_POKEMON)
-        self.carte = self.scene.addPixmap(affiche_booster())
-        self.scene.items()[0].setPos(60,50)
-        # self.scene.removeItem(booster)
-        # self.scene.items()[0].setPos(130,100)
+    
+        self.booster = self.scene.addPixmap(affiche_booster())
+        self.booster.setPos(60,50)
+
         view = QGraphicsView(self.scene)
         self.layout = QHBoxLayout()
-        self.open_button = QPushButton("Open!")
+        self.open_button = Button_Open()
         self.open_button.setFixedSize(50, 50)
         self.open_button.setGeometry(175, 570, 50, 50)
-        #self.pokemon_id = random.randint(1, 151)
+
         self.open_button.clicked.connect(self.sltcv)
         self.scene.addWidget(self.open_button)
         
@@ -73,10 +79,24 @@ class MyWindow(QMainWindow):
         
     @Slot()
     def sltcv(self):
-        self.scene.removeItem(self.carte)
-        self.carte = self.scene.addPixmap(assemble_carte_pokemon(random.randint(1, 809)))
-        self.scene.items()[0].setPos(60,50)
+        self.open_button.ajoute()
+        print(self.open_button.compte)
+        if(self.open_button.compte == 1):
+            self.scene.removeItem(self.booster)
+            self.carte = self.scene.addPixmap(assemble_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
+            self.carte.setPos(60,50)
+        elif(self.open_button.compte == 6):
+            self.open_button.compte = 0
+            self.scene.removeItem(self.carte)
+            self.booster = self.scene.addPixmap(affiche_booster())
+            self.booster.setPos(60,50)
+        else:
+            self.scene.removeItem(self.carte)
+            self.carte = self.scene.addPixmap(assemble_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
+            self.carte.setPos(60,50)
 
+
+       
 
 
 
@@ -88,3 +108,14 @@ myWindow = MyWindow()
 myWindow.show()
 app.exec()
 
+
+
+
+
+
+        # self.scene.addPixmap(charge_carte_image(pokemon_id))
+        # self.scene.addPixmap(charge_pokemon_image(pokemon_id))
+        # booster = self.scene.addPixmap(affiche_booster())
+        # self.scene.removeItem(booster)
+        # self.scene.items()[0].setPos(130,100)
+        #self.pokemon_id = random.randint(1, 151)
