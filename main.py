@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
     QGraphicsView,
     QGraphicsPixmapItem
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Slot
 from booster import *
 
 #class Pokemon(): 
@@ -50,7 +50,7 @@ class MyWindow(QMainWindow):
         # self.scene.addPixmap(charge_pokemon_image(pokemon_id))
         # booster = self.scene.addPixmap(affiche_booster())
         pokemon_id = random.randint(1, 151)
-        carte = self.scene.addPixmap(assemble_carte_pokemon(pokemon_id))
+        self.carte = self.scene.addPixmap(assemble_carte_pokemon(pokemon_id))
         self.scene.items()[0].setPos(60,50)
         # self.scene.removeItem(booster)
         # self.scene.items()[0].setPos(130,100)
@@ -59,7 +59,8 @@ class MyWindow(QMainWindow):
         self.open_button = QPushButton("Open!")
         self.open_button.setFixedSize(50, 50)
         self.open_button.setGeometry(175, 570, 50, 50)
-        #self.open_button.clicked.connect(self.scene.start_booster)
+        #self.pokemon_id = random.randint(1, 151)
+        self.open_button.clicked.connect(self.sltcv)
         self.scene.addWidget(self.open_button)
         
         
@@ -68,6 +69,12 @@ class MyWindow(QMainWindow):
       
         
         centralWidget.setLayout(self.layout)
+        
+    @Slot()
+    def sltcv(self):
+        self.scene.removeItem(self.carte)
+        self.carte = self.scene.addPixmap(assemble_carte_pokemon(random.randint(1, 809)))
+        self.scene.items()[0].setPos(60,50)
 
 
 

@@ -8,7 +8,7 @@ import random
 carte_dict = {
     "Fighting": "img/Fighting.png",
     "Dragon": "img/Dragon.png",
-    "Water": "img/Water.png",
+    "Psychic": "img/Psychic.png",
     "Electric": "img/Electric.png",
     "Fire": "img/Fire.png",
     "Dark": "img/Dark.png",
@@ -16,7 +16,7 @@ carte_dict = {
     "Grass": "img/Grass.png",
     "Normal": "img/Normal.png",
     "Steel": "img/Steel.png",
-    "Poison": "img/Grass.png",
+    "Poison": "img/Dark.png",
     "Ice": "img/Water.png",
     "Rock": "img/Fighting.png",
     "Ground": "img/Fighting.png",
@@ -49,7 +49,7 @@ def assemble_carte_pokemon(pokedex_id: int):
     
     # Assembler les deux images
     painter = QPainter(carte)
-    painter.drawImage(60, 50, pokemon)  # Ajustez les coordonnées selon vos besoins
+    painter.drawImage(70, 50, pokemon)  # Ajustez les coordonnées selon vos besoins
     painter.end()
     
     pixmap = QPixmap.fromImage(carte)
