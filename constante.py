@@ -21,6 +21,32 @@ CARTE_DICT = {
     "Ghost": "img/Psychic.png",
 }
 
+WEAKNESS_DICT = {
+    "Grass": "Fire",
+    "Fire": "Water",
+    "Water": "Electric",
+    "Electric": "Fighting",
+    "Fighting": "Psychic",
+    "Psychic": "Dark",
+    "Dark": "Fighting",
+    "Steel": "Fire",
+    "Dragon": "Dragon",
+    "Normal": "Fighting"
+}
+
+ATTACK_DICT = {
+    "Grass": "Vine Whip",
+    "Fire": "Ember",
+    "Water": "Water Gun",
+    "Electric": "Thunder Shock",
+    "Fighting": "Karate Chop",
+    "Psychic": "Confusion",
+    "Dark": "Bite",
+    "Steel": "Iron Tail",
+    "Dragon": "Dragon Breath",
+    "Normal": "Tackle"
+}
+
 FIRST_POKEMON = 1
 LAST_POKEMON = 809
 

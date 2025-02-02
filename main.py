@@ -11,9 +11,7 @@ from PySide6.QtCore import Qt, Slot
 from booster import *
 from constante import *
 
-#class Pokemon(): 
 
-        
 
 class Bouton(QPushButton):
     def __init__(self, parent=None):
@@ -58,8 +56,9 @@ class MyWindow(QMainWindow):
         self.setCentralWidget(centralWidget)
         self.scene = Scene(0,0,400,700)
     
-        self.booster = self.scene.addPixmap(affiche_booster())
-        self.booster.setPos(60,50)
+        self.booster = Booster()
+        self.boosterPixmap = self.scene.addPixmap(self.booster.affiche_booster())
+        self.boosterPixmap.setPos(60,50)
 
         view = QGraphicsView(self.scene)
         self.layout = QHBoxLayout()
@@ -82,31 +81,27 @@ class MyWindow(QMainWindow):
         self.open_button.ajoute()
         print(self.open_button.compte)
         if(self.open_button.compte == 1):
-            self.scene.removeItem(self.booster)
-            self.carte = self.scene.addPixmap(assemble_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
+            self.scene.removeItem(self.boosterPixmap)
+            self.carte = self.scene.addPixmap(Booster().assemble_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
             self.carte.setPos(60,50)
         elif(self.open_button.compte == 6):
             self.open_button.compte = 0
             self.scene.removeItem(self.carte)
-            self.booster = self.scene.addPixmap(affiche_booster())
-            self.booster.setPos(60,50)
+            self.boosterPixmap = self.scene.addPixmap(Booster().affiche_booster())
+            self.boosterPixmap.setPos(60,50)
         else:
             self.scene.removeItem(self.carte)
-            self.carte = self.scene.addPixmap(assemble_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
+            self.carte = self.scene.addPixmap(Booster().assemble_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
             self.carte.setPos(60,50)
 
 
        
 
-
-
-
-app = QApplication()
-
-myWindow = MyWindow()
-
-myWindow.show()
-app.exec()
+if __name__ == "__main__":
+    app = QApplication([])
+    win = MyWindow()
+    win.show()
+    app.exec()
 
 
 
