@@ -17,8 +17,9 @@ class Bouton(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
         
+        
 
-class Scene(QGraphicsScene):
+class Scene_Booster(QGraphicsScene):
     def __init__(self, *args): 
         super().__init__(*args)
         self.rect = QGraphicsRectItem(0, 0, 375, 680)
@@ -45,16 +46,13 @@ class Button_Open(QPushButton):
     def ajoute(self):
         self.compte += 1
         return self.compte
-        
-        
-
 
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         centralWidget = QWidget()
         self.setCentralWidget(centralWidget)
-        self.scene = Scene(0,0,400,700)
+        self.scene = Scene_Booster(0,0,400,700)
     
         self.booster = Booster()
         self.boosterPixmap = self.scene.addPixmap(self.booster.affiche_booster())
@@ -94,6 +92,10 @@ class MyWindow(QMainWindow):
             self.carte = self.scene.addPixmap(Booster().assemble_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
             self.carte.setPos(60,50)
 
+
+class Button_Scene(QPushButton):
+    def __init__(self):
+        pass
 
        
 
