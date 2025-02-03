@@ -17,7 +17,6 @@ class Bouton(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
         
-        
 
 class Scene_Booster(QGraphicsScene):
     def __init__(self, *args): 
@@ -80,7 +79,7 @@ class MyWindow(QMainWindow):
         print(self.open_button.compte)
         if(self.open_button.compte == 1):
             self.scene.removeItem(self.boosterPixmap)
-            self.carte = self.scene.addPixmap(Booster().assemble_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
+            self.carte = self.scene.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
             self.carte.setPos(60,50)
         elif(self.open_button.compte == 6):
             self.open_button.compte = 0
@@ -89,10 +88,10 @@ class MyWindow(QMainWindow):
             self.boosterPixmap.setPos(60,50)
         else:
             self.scene.removeItem(self.carte)
-            self.carte = self.scene.addPixmap(Booster().assemble_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
+            self.carte = self.scene.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
             self.carte.setPos(60,50)
 
-
+# à faire
 class Button_Scene(QPushButton):
     def __init__(self):
         pass
@@ -107,6 +106,7 @@ if __name__ == "__main__":
 
 
 
+QFontDatabase.addApplicationFont("./font/GillSansStdBold.otf")
 
 
 
