@@ -202,7 +202,8 @@ class Booster():
                 carte = self.load_carte_image(pokedex_id, 2)
             else:
                 carte = self.load_carte_image(pokedex_id, 1)
-            self.prev_evo = self.load_prev_evolution_image(my_pokemon)
+            self.prev_evo_image = self.load_prev_evolution_image(my_pokemon)
+            self.prev_evo = res[my_pokemon.prev_evolution()-1]["name"]["french"]
         else:
             carte = self.load_carte_image(pokedex_id, 0)
             self.prev_evo = None
@@ -213,11 +214,15 @@ class Booster():
         # Assembler les deux images
         painter = QPainter(carte)
         painter.drawImage(85, 60, new_pokemon)
+        painter.setFont(EVOLUTION_FONT)
+        if self.prev_evo != None:
+            painter.drawImage(10, 27, self.prev_evo_image)
+            painter.drawText(50, 45, f"Evolution de : {self.prev_evo}")    
+            
         painter.setFont(HP_FONT)
         painter.drawText(50, 210, f"N°{pokedex_id:03d} {my_pokemon.species()} HT: {my_pokemon.height()} WT: {my_pokemon.weight()} ") 
         
-        if self.prev_evo != None:
-            painter.drawImage(10, 27, self.prev_evo)    
+
         if my_pokemon.his_type() == "Dark":
             painter.setPen(Qt.white)
         else:

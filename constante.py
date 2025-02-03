@@ -136,6 +136,7 @@ BOOSTER = "img/booster.png"
 
 GILL_SANS_FONT = QFont("GillSansStdBold", 13, QFont.Bold)
 HP_FONT = QFont("GillSansStdBold", 6, QFont.Bold)
+EVOLUTION_FONT = QFont("GillSansStdBold", 5)
 
 
 
