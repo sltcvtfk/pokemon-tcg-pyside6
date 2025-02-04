@@ -47,6 +47,11 @@ class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setGeometry(0, 0, 410, 800)
+        
+        self.setWindowIcon(QIcon("img/pokeball_icon.png"))
+        self.setWindowTitle("Pokemon TCG")
+        
+        
         self.my_scenes = QStackedWidget()
         self.my_scenes.setGeometry(0, 0, 400, 700)
         self.setCentralWidget(self.my_scenes)
