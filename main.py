@@ -1,13 +1,12 @@
-from PySide6.QtWidgets import QGraphicsScene, QGraphicsView, QApplication, QMainWindow, QWidget ,QHBoxLayout, QPushButton, QLabel
+from PySide6.QtWidgets import QGraphicsScene, QGraphicsView, QApplication, QMainWindow, QWidget ,QHBoxLayout, QPushButton, QStackedWidget
 from PySide6.QtGui import QBrush, QPen, QColor, QCloseEvent, QPainter, QPaintEvent, QPixmap, QImage
 from PySide6.QtWidgets import (
     QApplication,
     QGraphicsRectItem,
     QGraphicsScene,
-    QGraphicsView,
-    QGraphicsPixmapItem
+    QGraphicsView
 )
-from PySide6.QtCore import Qt, Slot
+from PySide6.QtCore import Qt, Slot, QRectF
 from booster import *
 from constante import *
 
@@ -16,12 +15,11 @@ from constante import *
 class Bouton(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
-        
 
 class Scene_Booster(QGraphicsScene):
     def __init__(self, *args): 
         super().__init__(*args)
-
+        
         self.rect = QGraphicsRectItem(0, 0, 375, 680)
         self.rect.setPos(10, 10)
         brush = QBrush(QColor(220,220,220))
@@ -57,6 +55,7 @@ class MyWindow(QMainWindow):
         centralWidget = QWidget()
         self.setCentralWidget(centralWidget)
         self.scene = Scene_Booster(0,0,400,700)
+        self.scene.image = QImage("img/background.png")
 
         self.booster = Booster()
         self.boosterPixmap = self.scene.addPixmap(self.booster.affiche_booster())
