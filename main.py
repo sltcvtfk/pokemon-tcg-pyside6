@@ -1,12 +1,6 @@
-from PySide6.QtWidgets import QGraphicsScene, QGraphicsView, QApplication, QMainWindow, QWidget ,QHBoxLayout, QPushButton, QStackedWidget
-from PySide6.QtGui import QBrush, QPen, QColor, QCloseEvent, QPainter, QPaintEvent, QPixmap, QImage
-from PySide6.QtWidgets import (
-    QApplication,
-    QGraphicsRectItem,
-    QGraphicsScene,
-    QGraphicsView
-)
-from PySide6.QtCore import Qt, Slot, QRectF
+from PySide6.QtGui import*
+from PySide6.QtWidgets import *
+from PySide6.QtCore import *
 from booster import *
 from constante import *
 
@@ -16,10 +10,10 @@ class Bouton(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
 
+
 class Scene_Booster(QGraphicsScene):
     def __init__(self, *args): 
         super().__init__(*args)
-        
         self.rect = QGraphicsRectItem(0, 0, 375, 680)
         self.rect.setPos(10, 10)
         brush = QBrush(QColor(220,220,220))
@@ -28,11 +22,11 @@ class Scene_Booster(QGraphicsScene):
         pen.setWidth(1)
         self.rect.setPen(pen)
         self.addItem(self.rect)
+        
+class Scene_Pokedex(QGraphicsScene):
+    def __init__(self, *args): 
+        super().__init__(*args)
 
-    #def start_booster(self):     
-    #def setColor(self, *args):
-    #brush = QBrush(QColor())
-    
 class Button_Open(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
@@ -52,50 +46,104 @@ class Button_Open(QPushButton):
 class MyWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        centralWidget = QWidget()
-        self.setCentralWidget(centralWidget)
-        self.scene = Scene_Booster(0,0,400,700)
-        self.scene.image = QImage("img/background.png")
-
-        self.booster = Booster()
-        self.boosterPixmap = self.scene.addPixmap(self.booster.affiche_booster())
-        self.boosterPixmap.setPos(60,50)
-
-        view = QGraphicsView(self.scene)
-        self.layout = QHBoxLayout()
-        self.open_button = Button_Open()
-        self.open_button.setFixedSize(50, 50)
-        self.open_button.setGeometry(175, 570, 50, 50)
-
-        self.open_button.clicked.connect(self.booster_scene)
-        self.scene.addWidget(self.open_button)
-        self.layout.addWidget(view)
+        self.setGeometry(0, 0, 410, 800)
+        self.my_scenes = QStackedWidget()
+        self.my_scenes.setGeometry(0, 0, 400, 700)
+        self.setCentralWidget(self.my_scenes)
+        toolbar = QToolBar("Toolbar")
+   
+        toolbar.setMovable(False)
+        toolbar.setFixedHeight(75)
+        toolbar.setIconSize(QSize(50, 50))
         
-        centralWidget.setLayout(self.layout)
+        left_spacer = QWidget()
+        left_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        # spacer widget for right
+        # you can't add the same widget to both left and right. you need two different widgets.
+        right_spacer = QWidget()
+        right_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        toolbar.addWidget(right_spacer)
         
-    @Slot()
+        self.addToolBar(Qt.BottomToolBarArea, toolbar)
+        
+        actPokedex = QAction(QIcon("img/pokedex_icon.png"), "Pokedex", self)
+        actPokedex.setStatusTip("Pokedex")
+        actPokedex.triggered.connect(self.pokedex_scene)
+        
+        actBooster = QAction(QIcon("img/pokeball_icon.png"), "Booster", self)
+        actBooster.setStatusTip("Booster")
+        actBooster.triggered.connect(self.booster_scene)
+        toolbar.addSeparator()
+        toolbar.addAction(actPokedex)
+        toolbar.addSeparator()
+        toolbar.addAction(actBooster)
+        toolbar.addSeparator()
+        toolbar.addWidget(left_spacer)
+        
+        self.avoid = 0
+        
+        self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
+        self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
+
+        self.my_scenes.addWidget(QGraphicsView(self.scene_booster))
+        self.my_scenes.addWidget(QGraphicsView(self.scene_pokedex))
+        
+        
+        self.booster_scene()
+        
+    def pokedex_scene(self):
+        if self.avoid == 1:
+            self.my_scenes.setCurrentIndex(1)
+            self.button_test = Bouton()
+            self.button_test.clicked.connect(self.salut)
+            self.scene_pokedex.addWidget(self.button_test)
+        self.avoid = 0
+    
+    
     def booster_scene(self):
+        if self.avoid == 0:
+            self.my_scenes.setCurrentIndex(0)
+            self.booster = Booster()
+            self.boosterPixmap = self.scene_booster.addPixmap(self.booster.affiche_booster())
+            self.boosterPixmap.setPos(60,50)
 
+            
+            self.layout = QHBoxLayout()
+            self.open_button = Button_Open()
+            self.open_button.setFixedSize(50, 50)
+            self.open_button.setGeometry(175, 570, 50, 50)
+
+            self.open_button.clicked.connect(self.booster_start)
+            self.scene_booster.addWidget(self.open_button)
+        self.avoid = 1
+
+        
+        
+        
+    
+    @Slot()
+    def booster_start(self):
         self.open_button.click()
         print(self.open_button.compte)
         if(self.open_button.compte == 1):
-            self.scene.removeItem(self.boosterPixmap)
-            self.carte = self.scene.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
+            self.scene_booster.removeItem(self.boosterPixmap)
+            self.carte = self.scene_booster.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
             self.carte.setPos(60,50)
         elif(self.open_button.compte == 6):
             self.open_button.compte = 0
-            self.scene.removeItem(self.carte)
-            self.boosterPixmap = self.scene.addPixmap(Booster().affiche_booster())
+            self.scene_booster.removeItem(self.carte)
+            self.boosterPixmap = self.scene_booster.addPixmap(Booster().affiche_booster())
             self.boosterPixmap.setPos(60,50)
         else:
-            self.scene.removeItem(self.carte)
-            self.carte = self.scene.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
+            self.scene_booster.removeItem(self.carte)
+            self.carte = self.scene_booster.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
             self.carte.setPos(60,50)
-
-# à faire
-class Button_Scene(QPushButton):
-    def __init__(self):
-        pass
+            
+    @Slot()
+    def salut(self):
+        print("Salut!")
+            
+            
 
 if __name__ == "__main__":
     app = QApplication([])
