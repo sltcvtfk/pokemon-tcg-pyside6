@@ -122,7 +122,7 @@ class Booster():
         self.pokemons = []
         
     def add_to_list(self, pokedex_id):
-        self.pokemon.append(Pokemon(pokedex_id))
+        self.pokemons.append(Pokemon(pokedex_id))
         
     def load_carte_image(self, pokedex_id: int, how_many_prev: int):
         """

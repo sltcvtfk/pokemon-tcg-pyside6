@@ -135,7 +135,7 @@ class MyWindow(QMainWindow):
         if(self.open_button.compte == 1):
             self.scene_booster.removeItem(self.boosterPixmap)
             self.carte = self.scene_booster.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
-            self.carte.setPos(60,50)
+            self.carte.setPos(50,50)
         elif(self.open_button.compte == 6):
             self.open_button.compte = 0
             self.scene_booster.removeItem(self.carte)
@@ -144,7 +144,7 @@ class MyWindow(QMainWindow):
         else:
             self.scene_booster.removeItem(self.carte)
             self.carte = self.scene_booster.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
-            self.carte.setPos(60,50)
+            self.carte.setPos(50,50)
             
     @Slot()
     def salut(self):
