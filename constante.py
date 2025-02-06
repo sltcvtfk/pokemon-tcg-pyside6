@@ -1,4 +1,4 @@
-from PySide6.QtGui import QFontDatabase, QFont
+from PySide6.QtGui import QFont
 
 GENERATION = [(1,151), (152,251), (252,386), (387,493), (494,649), (650,721), (722,809)]
 
