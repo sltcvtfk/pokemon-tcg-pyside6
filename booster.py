@@ -10,7 +10,12 @@ with open(POKEDEX, encoding="utf8") as f:
     res = json.load(f)
     
 class Pokemon(): 
-    def __init__(self, pokedex_id):
+    def __init__(self, pokedex_id: int):
+        """
+
+        Args:
+            pokedex_id (int): Pokedex ID of the pokemon
+        """
         self.pokedex_id = pokedex_id
         
     def height(self):

@@ -45,6 +45,12 @@ class Button_Open(QPushButton):
 
 class MyWindow(QMainWindow):
     def __init__(self):
+        """ Va afficher la fenêtre principale de l'application en stockant les différentes 
+        scènes dans un QStackedWidget, les initialisant puis 
+        affichant la scène de booster par défaut.
+        
+        self.avoid: int: 0 if the scene is pokedex, 1 if the scene is booster
+        """
         super().__init__()
         self.setGeometry(0, 0, 410, 800)
         
@@ -55,6 +61,8 @@ class MyWindow(QMainWindow):
         self.my_scenes = QStackedWidget()
         self.my_scenes.setGeometry(0, 0, 400, 700)
         self.setCentralWidget(self.my_scenes)
+        
+        
         
         self.avoid = 0
         
@@ -71,11 +79,21 @@ class MyWindow(QMainWindow):
         self.booster_scene()
         
     def init_pokedex_scene(self):
+        """Initialise the pokedex scene
+        """
+        self.layout_pokedex = QGridLayout()
         self.button_test = Bouton()
         self.button_test.clicked.connect(self.salut)
+        
+        widget = QWidget()
+        widget.setLayout(self.layout_pokedex)
+        self.scene_pokedex.addWidget(widget)
+
         self.scene_pokedex.addWidget(self.button_test) 
             
     def init_toolbar(self):
+        """Initialise the toolbar
+        """
         toolbar = QToolBar("Toolbar")
         toolbar.setMovable(False)
         toolbar.setFixedHeight(75)
@@ -100,6 +118,8 @@ class MyWindow(QMainWindow):
         toolbar.addWidget(left_spacer)
         
     def init_booster_scene(self):
+        """Initialise the booster scene
+        """
         self.open_button = Button_Open()
         self.open_button.setFixedSize(50, 50)
         self.open_button.setGeometry(175, 570, 50, 50)
@@ -114,22 +134,31 @@ class MyWindow(QMainWindow):
         
         
     def pokedex_scene(self):
+        """Change any scene to pokedex scene
+        """
         if self.avoid == 1:
             self.my_scenes.setCurrentIndex(1)
         self.avoid = 0
     
     
     def booster_scene(self):
+        """Change any scene to booster scene
+        self.avoid: int: 0 if the scene is pokedex, 1 if the scene is booster
+        """
         if self.avoid == 0:
             self.my_scenes.setCurrentIndex(0)
         self.avoid = 1
 
-        
-        
+
         
     
     @Slot()
     def booster_start(self):
+        """Start the booster. 
+        Si le compte est égal à 1, on enlève le booster, on affiche une carte
+        Si le compte est égal à 6, on enlève la carte, on affiche un booster
+        Sinon, on enlève la carte, on affiche une autre carte
+        """
         self.open_button.click()
         print(self.open_button.compte)
         if(self.open_button.compte == 1):
@@ -148,7 +177,40 @@ class MyWindow(QMainWindow):
             
     @Slot()
     def salut(self):
-        print("Salut!")
+        """Affiche les 151 premiers pokemons dans le pokedex
+        """
+        with open(POKEDEX, encoding="utf8") as f:
+            res = json.load(f)
+        
+        self.wizard = QWizard()
+        self.wizard.setWizardStyle(QWizard.ModernStyle)
+        self.wizard.setOptions(QWizard.NoBackButtonOnStartPage)
+        
+        num_pages = (151 // 20) + (1 if 151 % 20 != 0 else 0)
+        
+        for page_num in range(num_pages):
+            page = QWizardPage()
+            page.setTitle(f"Page {page_num + 1}")
+            layout = QGridLayout()
+            
+            for i in range(20):
+                index = page_num * 20 + i
+                if index >= 151:
+                    break
+            
+            pic = QLabel()
+            x = requests.get(res[index]["image"]["sprite"], stream=True)
+            image = QImage()
+            image.loadFromData(x.content)
+            img = image.scaled(40, 40, Qt.AspectRatioMode.KeepAspectRatio)
+            pic.setPixmap(QPixmap.fromImage(img))
+            layout.addWidget(pic, i // 5, i % 5)
+            
+            page.setLayout(layout)
+            self.wizard.addPage(page)
+        
+        self.layout_pokedex.addWidget(self.wizard)
+        
             
             
 
