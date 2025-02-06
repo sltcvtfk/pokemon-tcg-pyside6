@@ -55,26 +55,40 @@ class MyWindow(QMainWindow):
         self.my_scenes = QStackedWidget()
         self.my_scenes.setGeometry(0, 0, 400, 700)
         self.setCentralWidget(self.my_scenes)
+        
+        self.avoid = 0
+        
+        self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
+        self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
+
+        self.my_scenes.addWidget(QGraphicsView(self.scene_booster))
+        self.my_scenes.addWidget(QGraphicsView(self.scene_pokedex))
+        
+        self.init_toolbar()
+        self.init_booster_scene()
+        self.init_pokedex_scene()
+        
+        self.booster_scene()
+        
+    def init_pokedex_scene(self):
+        self.button_test = Bouton()
+        self.button_test.clicked.connect(self.salut)
+        self.scene_pokedex.addWidget(self.button_test) 
+            
+    def init_toolbar(self):
         toolbar = QToolBar("Toolbar")
-   
         toolbar.setMovable(False)
         toolbar.setFixedHeight(75)
         toolbar.setIconSize(QSize(50, 50))
-        
         left_spacer = QWidget()
         left_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        # spacer widget for right
-        # you can't add the same widget to both left and right. you need two different widgets.
         right_spacer = QWidget()
         right_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         toolbar.addWidget(right_spacer)
-        
         self.addToolBar(Qt.BottomToolBarArea, toolbar)
-        
         actPokedex = QAction(QIcon("img/pokedex_icon.png"), "Pokedex", self)
         actPokedex.setStatusTip("Pokedex")
         actPokedex.triggered.connect(self.pokedex_scene)
-        
         actBooster = QAction(QIcon("img/pokeball_icon.png"), "Booster", self)
         actBooster.setStatusTip("Booster")
         actBooster.triggered.connect(self.booster_scene)
@@ -85,41 +99,29 @@ class MyWindow(QMainWindow):
         toolbar.addSeparator()
         toolbar.addWidget(left_spacer)
         
-        self.avoid = 0
-        
-        self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
-        self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
+    def init_booster_scene(self):
+        self.open_button = Button_Open()
+        self.open_button.setFixedSize(50, 50)
+        self.open_button.setGeometry(175, 570, 50, 50)
 
-        self.my_scenes.addWidget(QGraphicsView(self.scene_booster))
-        self.my_scenes.addWidget(QGraphicsView(self.scene_pokedex))
+
+        self.booster = Booster()
+        self.boosterPixmap = self.scene_booster.addPixmap(self.booster.affiche_booster())
+        self.boosterPixmap.setPos(60,50)
         
+        self.open_button.clicked.connect(self.booster_start)
+        self.scene_booster.addWidget(self.open_button)      
         
-        self.booster_scene()
         
     def pokedex_scene(self):
         if self.avoid == 1:
             self.my_scenes.setCurrentIndex(1)
-            self.button_test = Bouton()
-            self.button_test.clicked.connect(self.salut)
-            self.scene_pokedex.addWidget(self.button_test)
         self.avoid = 0
     
     
     def booster_scene(self):
         if self.avoid == 0:
             self.my_scenes.setCurrentIndex(0)
-            self.booster = Booster()
-            self.boosterPixmap = self.scene_booster.addPixmap(self.booster.affiche_booster())
-            self.boosterPixmap.setPos(60,50)
-
-            
-            self.layout = QHBoxLayout()
-            self.open_button = Button_Open()
-            self.open_button.setFixedSize(50, 50)
-            self.open_button.setGeometry(175, 570, 50, 50)
-
-            self.open_button.clicked.connect(self.booster_start)
-            self.scene_booster.addWidget(self.open_button)
         self.avoid = 1
 
         
