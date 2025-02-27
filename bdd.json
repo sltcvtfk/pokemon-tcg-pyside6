@@ -1,0 +1,22 @@
+{
+    "Greg": {
+        "password" : "1234",
+        "isAdmin" : false,
+        "pokedex": []
+    },
+    "Sacha": {
+        "password" : "pikachu",
+        "isAdmin" : true,
+        "pokedex": []
+    },
+    "": {
+        "password" : "starmie",
+        "isAdmin" : false,
+        "pokedex": []
+    },
+    "Pierre": {
+        "password" : "onix",
+        "isAdmin" : false,
+        "pokedex": []
+    }
+}

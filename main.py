@@ -60,7 +60,6 @@ class MyWindow(QMainWindow):
         scènes dans un QStackedWidget, les initialisant puis 
         affichant la scène de booster par défaut.
         
-        self.avoid: int: 0 if the scene is pokedex, 1 if the scene is booster
         """
         super().__init__()
         self.setGeometry(0, 0, 410, 800)
@@ -73,9 +72,6 @@ class MyWindow(QMainWindow):
         self.my_scenes.setGeometry(0, 0, 400, 700)
         self.setCentralWidget(self.my_scenes)
         
-        
-        
-        self.avoid = 0
         
         self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
         self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
@@ -146,18 +142,16 @@ class MyWindow(QMainWindow):
     def pokedex_scene(self):
         """Change any scene to pokedex scene
         """
-        if self.avoid == 1:
-            self.my_scenes.setCurrentIndex(1)
-        self.avoid = 0
+        self.my_scenes.setCurrentIndex(1)
+
     
     
     def booster_scene(self):
         """Change any scene to booster scene
         self.avoid: int: 0 if the scene is pokedex, 1 if the scene is booster
         """
-        if self.avoid == 0:
-            self.my_scenes.setCurrentIndex(0)
-        self.avoid = 1
+        self.my_scenes.setCurrentIndex(0)
+ 
 
 
         
@@ -195,17 +189,20 @@ class MyWindow(QMainWindow):
         
         self.page_widget = QWidget()
         self.page_widget.setObjectName("page_widget")
-        self.page_widget.setStyleSheet("QWidget#page_widget { border-image: url(./img/motisma_dex.png); border: 1px solid black; }")
+        self.page_widget.setStyleSheet("QWidget#page_widget { border-image: url(./img/motisma_dex.png);}")
         
         self.page_widget.setFixedSize(375, 682)
         self.page_layout = QVBoxLayout()
          
         
         self.pokemon_layout = QGridLayout()
+
         self.page_layout.addLayout(self.pokemon_layout)
         
         self.button_layout = QHBoxLayout()
+        self.button_layout.setContentsMargins(32, 0, 32, 120)
         self.prev_button = QPushButton("Previous")
+        
         self.prev_button.clicked.connect(self.prev_page)
         self.next_button = QPushButton("Next")
         self.next_button.clicked.connect(self.next_page)
@@ -216,8 +213,11 @@ class MyWindow(QMainWindow):
         
         self.page_widget.setLayout(self.page_layout)
         self.layout_pokedex.addWidget(self.page_widget)
+        self.pokemon_layout.setContentsMargins(32, 130, 32, 32)
+     
         
         self.update_page()
+        
     def update_page(self):
         """Met à jour la page actuelle du pokedex"""
         for i in reversed(range(self.pokemon_layout.count())):
