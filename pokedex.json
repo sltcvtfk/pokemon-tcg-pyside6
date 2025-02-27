@@ -198,10 +198,7 @@
     },
     "species": "Flame Pokémon",
     "description": "Charizard flies around the sky in search of powerful opponents. It breathes fire of such great heat that it melts anything. However, it never turns its fiery breath on any opponent weaker than itself.",
-    "evolution": 
-    { "prev":
-     ["5", "Level 36"] 
-    },
+    "evolution": { "prev": ["5", "Level 36"] },
     "profile": {
       "height": "1.7 m",
       "weight": "90.5 kg",
@@ -28085,7 +28082,7 @@
       "english": "Type: Null",
       "japanese": "タイプ：ヌル",
       "chinese": "属性：空",
-      "french": "Silvallié"
+      "french": "Type:0"
     },
     "type": ["Normal"],
     "base": {
@@ -28118,7 +28115,7 @@
       "english": "Silvally",
       "japanese": "シルヴァディ",
       "chinese": "银伴战兽",
-      "french": "Météno"
+      "french": "Silvallié"
     },
     "type": ["Normal"],
     "base": {
@@ -28151,7 +28148,7 @@
       "english": "Minior",
       "japanese": "メテノ",
       "chinese": "小陨星",
-      "french": "Dodoala"
+      "french": "Météno"
     },
     "type": ["Rock", "Flying"],
     "base": {
@@ -28184,7 +28181,7 @@
       "english": "Komala",
       "japanese": "ネッコアラ",
       "chinese": "树枕尾熊",
-      "french": "Boumata"
+      "french": "Dodoala"
     },
     "type": ["Normal"],
     "base": {
@@ -28217,7 +28214,7 @@
       "english": "Turtonator",
       "japanese": "バクガメス",
       "chinese": "爆焰龟兽",
-      "french": "Togedemaru"
+      "french": "Boumata"
     },
     "type": ["Fire", "Dragon"],
     "base": {
@@ -28250,7 +28247,7 @@
       "english": "Togedemaru",
       "japanese": "トゲデマル",
       "chinese": "托戈德玛尔",
-      "french": "Mimiqui"
+      "french": "Togedemaru"
     },
     "type": ["Electric", "Steel"],
     "base": {
@@ -28287,7 +28284,7 @@
       "english": "Mimikyu",
       "japanese": "ミミッキュ",
       "chinese": "谜拟Ｑ",
-      "french": "Denticrisse"
+      "french": "Mimiqui"
     },
     "type": ["Ghost", "Fairy"],
     "base": {
@@ -28320,7 +28317,7 @@
       "english": "Bruxish",
       "japanese": "ハギギシリ",
       "chinese": "磨牙彩皮鱼",
-      "french": "Draïeul"
+      "french": "Denticrisse"
     },
     "type": ["Water", "Psychic"],
     "base": {
@@ -28357,7 +28354,7 @@
       "english": "Drampa",
       "japanese": "ジジーロン",
       "chinese": "老翁龙",
-      "french": "Sinistrail"
+      "french": "Draïeul"
     },
     "type": ["Normal", "Dragon"],
     "base": {
@@ -28394,7 +28391,7 @@
       "english": "Dhelmise",
       "japanese": "ダダリン",
       "chinese": "破破舵轮",
-      "french": "Bébécaille"
+      "french": "Sinistrail"
     },
     "type": ["Ghost", "Grass"],
     "base": {
@@ -28427,7 +28424,7 @@
       "english": "Jangmo-o",
       "japanese": "ジャラコ",
       "chinese": "心鳞宝",
-      "french": "Écaïd"
+      "french": "Bébécaille"
     },
     "type": ["Dragon"],
     "base": {
@@ -28464,7 +28461,7 @@
       "english": "Hakamo-o",
       "japanese": "ジャランゴ",
       "chinese": "鳞甲龙",
-      "french": "Ékaïser"
+      "french": "Écaïd"
     },
     "type": ["Dragon", "Fighting"],
     "base": {
@@ -28501,7 +28498,7 @@
       "english": "Kommo-o",
       "japanese": "ジャラランガ",
       "chinese": "杖尾鳞甲龙",
-      "french": "Tokorico"
+      "french": "Ékaïser"
     },
     "type": ["Dragon", "Fighting"],
     "base": {
@@ -28538,7 +28535,7 @@
       "english": "Tapu Koko",
       "japanese": "カプ・コケコ",
       "chinese": "卡璞・鸣鸣",
-      "french": "Tokopiyon"
+      "french": "Tokorico"
     },
     "type": ["Electric", "Fairy"],
     "base": {
@@ -28574,7 +28571,7 @@
       "english": "Tapu Lele",
       "japanese": "カプ・テテフ",
       "chinese": "卡璞・蝶蝶",
-      "french": "Tokotoro"
+      "french": "Tokopiyon"
     },
     "type": ["Psychic", "Fairy"],
     "base": {
@@ -28610,7 +28607,7 @@
       "english": "Tapu Bulu",
       "japanese": "カプ・ブルル",
       "chinese": "卡璞・哞哞",
-      "french": "Tokopisco"
+      "french": "Tokotoro"
     },
     "type": ["Grass", "Fairy"],
     "base": {

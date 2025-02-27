@@ -266,44 +266,64 @@ class MyWindow(QMainWindow):
     
     def update_page(self):
         """Update the current page with Pokemon images"""
+        
         for i in reversed(range(self.pokemon_layout.count())):
             self.pokemon_layout.itemAt(i).widget().setParent(None)
+            
+        labels = []
         
         if self.searchBar.filtered == [] :
             for i in range(self.pokemon_per_page):
                 index = self.current_page * self.pokemon_per_page + i
                 
                 if index >= self.total_pokemon:
+                    self.next_button.setDisabled(index >= self.total_pokemon)
                     break
+                else:
+                    self.next_button.setEnabled(self.current_page < self.num_pages - 1)
                 pic = QLabel()
                 pic.setFixedSize(65, 65)
                 self.pokemon_layout.addWidget(pic, i // 4, i % 4)
-                self.load_pokemon_image(pic, index)
+                labels.append((pic, index))
         else :
             for i in range(self.pokemon_per_page):
                 index = self.current_page * self.pokemon_per_page + i
 
+                
                 if index >= len(self.searchBar.filtered):
+                    self.next_button.setDisabled(index >= len(self.searchBar.filtered))
                     break
-               
+                else: 
+                    self.next_button.setEnabled(self.current_page < self.num_pages - 1)
+
                 pic = QLabel()
                 pic.setFixedSize(65, 65)
                 self.pokemon_layout.addWidget(pic, i // 4, i % 4)
-                self.load_pokemon_image(pic, self.searchBar.filtered[index]-1)
+                labels.append((pic, self.searchBar.filtered[index]-1))
+        
         
         
         self.prev_button.setEnabled(self.current_page > 0)
-        self.next_button.setEnabled(self.current_page < self.num_pages - 1)
+        
+        
+        self.load_pokemon_images(labels)
     
-    def load_pokemon_image(self, label, index):
-        """Load a single Pokemon image"""
-        x = requests.get(res[index]["image"]["thumbnail"], stream=True)
-        image = QImage()
-        image.loadFromData(x.content)
-        img = image.scaled(65, 65, Qt.AspectRatioMode.KeepAspectRatio)
-        label.setPixmap(QPixmap.fromImage(img))
+  
+    def load_pokemon_images(self, labels):
+        """Load Pokemon images concurrently"""
+        import concurrent.futures
 
-    
+        def load_single_image(label, index):
+            x = requests.get(res[index]["image"]["thumbnail"], stream=True)
+            image = QImage()
+            image.loadFromData(x.content)
+            img = image.scaled(65, 65, Qt.AspectRatioMode.KeepAspectRatio)
+            label.setPixmap(QPixmap.fromImage(img))
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
+            futures = [executor.submit(load_single_image, label, index) for label, index in labels]
+            concurrent.futures.wait(futures)
+
     def prev_page(self):
         """Go to the previous page"""
         if self.current_page > 0:
@@ -314,9 +334,7 @@ class MyWindow(QMainWindow):
         """Go to the next page"""
         if self.current_page < self.num_pages - 1:
             self.current_page += 1
-            self.update_page(
-                
-            )
+            self.update_page()
 if __name__ == "__main__":
     app = QApplication([])
     win = MyWindow()
