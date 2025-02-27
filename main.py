@@ -4,6 +4,7 @@ from PySide6.QtCore import *
 from booster import *
 from constante import *
 from searchbar import *
+from connexion import *
 
 with open(POKEDEX, encoding="utf8") as f:
     res = json.load(f)
@@ -26,6 +27,18 @@ class Scene_Booster(QGraphicsScene):
         self.addItem(self.rect)
         
 class Scene_Pokedex(QGraphicsScene):
+    def __init__(self, *args): 
+        super().__init__(*args)
+        self.rect = QGraphicsRectItem(0, 0, 375, 680)
+        self.rect.setPos(10, 10)
+        brush = QBrush(QColor(220,220,220))
+        self.rect.setBrush(brush)
+        pen = QPen(QColor(0,0,0))
+        pen.setWidth(1)
+        self.rect.setPen(pen)
+        self.addItem(self.rect)
+
+class Scene_Connexion(QGraphicsScene) :
     def __init__(self, *args): 
         super().__init__(*args)
         self.rect = QGraphicsRectItem(0, 0, 375, 680)
@@ -78,13 +91,16 @@ class MyWindow(QMainWindow):
         
         self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
         self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
+        self.scene_connexion = Scene_Connexion(0 ,0 ,400, 700)
 
         self.my_scenes.addWidget(QGraphicsView(self.scene_booster))
         self.my_scenes.addWidget(QGraphicsView(self.scene_pokedex))
+        self.my_scenes.addWidget(QGraphicsView(self.scene_connexion))
         
         self.init_toolbar()
         self.init_booster_scene()
         self.init_pokedex_scene()
+        self.init_connexion_scene()
         
         self.booster_scene()
         
@@ -119,22 +135,30 @@ class MyWindow(QMainWindow):
         toolbar.setMovable(False)
         toolbar.setFixedHeight(75)
         toolbar.setIconSize(QSize(50, 50))
+        
         left_spacer = QWidget()
         left_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         right_spacer = QWidget()
         right_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         toolbar.addWidget(right_spacer)
         self.addToolBar(Qt.BottomToolBarArea, toolbar)
+        
         actPokedex = QAction(QIcon("img/pokedex_icon.png"), "Pokedex", self)
         actPokedex.setStatusTip("Pokedex")
         actPokedex.triggered.connect(self.pokedex_scene)
         actBooster = QAction(QIcon("img/pokeball_icon.png"), "Booster", self)
         actBooster.setStatusTip("Booster")
         actBooster.triggered.connect(self.booster_scene)
+        actUser = QAction(QIcon("img/user.png"), "User", self)
+        actUser.setStatusTip("User")
+        actUser.triggered.connect(self.connexion_scene)
+        
         toolbar.addSeparator()
         toolbar.addAction(actPokedex)
         toolbar.addSeparator()
         toolbar.addAction(actBooster)
+        toolbar.addSeparator()
+        toolbar.addAction(actUser)
         toolbar.addSeparator()
         toolbar.addWidget(left_spacer)
         
@@ -153,23 +177,34 @@ class MyWindow(QMainWindow):
         self.open_button.clicked.connect(self.booster_start)
         self.scene_booster.addWidget(self.open_button)      
         
+    
+    def init_connexion_scene(self) :
+        """_Initialise la scène de connexion
+        """
+        self.connexion = Connexion()
+        self.connexion.setFixedSize(400, 700)
+        self.scene_connexion.addWidget(self.connexion)
+        
         
     def pokedex_scene(self):
         """Change any scene to pokedex scene
         """
-        if self.avoid == 1:
-            self.my_scenes.setCurrentIndex(1)
-        self.avoid = 0
+        
+        self.my_scenes.setCurrentIndex(1)
+        
     
     
     def booster_scene(self):
         """Change any scene to booster scene
         self.avoid: int: 0 if the scene is pokedex, 1 if the scene is booster
         """
-        if self.avoid == 0:
-            self.my_scenes.setCurrentIndex(0)
-        self.avoid = 1
+       
+        self.my_scenes.setCurrentIndex(0)
+   
 
+    def connexion_scene(self):
+        
+        self.my_scenes.setCurrentIndex(2)
 
         
     
