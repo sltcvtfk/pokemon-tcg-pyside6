@@ -198,7 +198,10 @@
     },
     "species": "Flame Pokémon",
     "description": "Charizard flies around the sky in search of powerful opponents. It breathes fire of such great heat that it melts anything. However, it never turns its fiery breath on any opponent weaker than itself.",
-    "evolution": { "prev": ["5", "Level 36"] },
+    "evolution": 
+    { "prev":
+     ["5", "Level 36"] 
+    },
     "profile": {
       "height": "1.7 m",
       "weight": "90.5 kg",
