@@ -3,7 +3,6 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from booster import *
 from constante import *
-import concurrent.futures
 
 with open(POKEDEX, encoding="utf8") as f:
     res = json.load(f)
@@ -186,79 +185,76 @@ class MyWindow(QMainWindow):
             
     @Slot()
     def pages(self):
-        """Affiche les 151 premiers pokemons dans le pokedex"""
-        self.current_page = 0
-        self.pokemon_per_page = 20
-        self.total_pokemon = 809
-        self.num_pages = (self.total_pokemon // self.pokemon_per_page) + (1 if self.total_pokemon % self.pokemon_per_page != 0 else 0)
-        
-        self.page_widget = QWidget()
-        self.page_widget.setStyleSheet("background-color: #DCDCDC")
-        
-        self.page_widget.move(125, 25)
-        self.page_layout = QVBoxLayout()
-        self.page_layout
-        
-        self.pokemon_layout = QGridLayout()
-        self.page_layout.addLayout(self.pokemon_layout)
-        
-        self.button_layout = QHBoxLayout()
-        self.prev_button = QPushButton("Previous")
-        self.prev_button.clicked.connect(self.prev_page)
-        self.next_button = QPushButton("Next")
-        self.next_button.clicked.connect(self.next_page)
-        
-        self.button_layout.addWidget(self.prev_button)
-        self.button_layout.addWidget(self.next_button)
-        self.page_layout.addLayout(self.button_layout)
-        
-        self.page_widget.setLayout(self.page_layout)
-        self.layout_pokedex.addWidget(self.page_widget)
-        
-        self.update_page()
-    
-    def update_page(self):
-        """Update the current page with Pokemon images"""
-        for i in reversed(range(self.pokemon_layout.count())):
-            self.pokemon_layout.itemAt(i).widget().deleteLater()
-        
-        def load_image(index):
-            if index >= self.total_pokemon:
-                return
-            pic = QLabel()
-            pic.setFixedSize(65, 65)
-            self.pokemon_layout.addWidget(pic, index // 4, index % 4)
-            self.load_pokemon_image(pic, index)
-        
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            indices = range(self.current_page * self.pokemon_per_page, (self.current_page + 1) * self.pokemon_per_page)
-            executor.map(load_image, indices)
-        
-        self.prev_button.setEnabled(self.current_page > 0)
-        self.next_button.setEnabled(self.current_page < self.num_pages - 1)
-    
-    def load_pokemon_image(self, label, index):
-        """Load a single Pokemon image"""
-        x = requests.get(res[index]["image"]["thumbnail"], stream=True)
-        image = QImage()
-        image.loadFromData(x.content)
-        img = image.scaled(65, 65, Qt.AspectRatioMode.KeepAspectRatio)
-        label.setPixmap(QPixmap.fromImage(img))
 
+        """Affiche les 151 premiers pokemons dans le pokedex"""
+        
+        self.wizard = QWizard()
+        self.wizard.setWizardStyle(QWizard.ModernStyle)
+        self.wizard.setStyleSheet("QWizard { background-color: #DCDCDC; }")
+        # self.wizard.setOption(QWizard.NoBackButtonOnStartPage, True)
+        self.wizard.setOption(QWizard.NoCancelButton, True)
+        self.wizard.setOption(QWizard.HaveFinishButtonOnEarlyPages, False)  # Hide Finish button
+        self.wizard.setButtonLayout([QWizard.Stretch, QWizard.BackButton, QWizard.NextButton])  # Custom button layout
+        
+        self.wizard.setFixedSize(375, 600)
+        
+        # 4 columns * 5 rows = 20 Pokemon per page
+        num_pages = (809 // 20) + (1 if 809 % 20 != 0 else 0)
+        
+        for page_num in range(num_pages):
+            page = QWizardPage()
+            page.setTitle(f"Page {page_num + 1}")
+            page.setStyleSheet("QWizardPage { background-color: #DCDCDC; }")
     
-    def prev_page(self):
-        """Go to the previous page"""
-        if self.current_page > 0:
-            self.current_page -= 1
-            self.update_page()
-    
-    def next_page(self):
-        """Go to the next page"""
-        if self.current_page < self.num_pages - 1:
-            self.current_page += 1
-            self.update_page(
+            layout = QGridLayout()
+            layout.setSpacing(15)  # Increased spacing between items
+            layout.setContentsMargins(10, 20, 10, 20)  # Adjusted margins
+            
+            start_index = page_num * 20
+            end_index = min(start_index + 20, 809)
+            
+            for i, index in enumerate(range(start_index, end_index)):
+                pic = QLabel()
+                pic.setProperty("pokemon_index", index)
+                pic.setFixedSize(65, 65)  # Slightly smaller images for better fit
+                layout.addWidget(pic, i // 4, i % 4)
                 
-            )
+                # Add vertical spacing between rows
+                if i % 4 == 0:
+                    layout.setRowMinimumHeight(i // 4, 80)
+            
+            page.setLayout(layout)
+            self.wizard.addPage(page)
+        
+        self.wizard.currentIdChanged.connect(self.load_pokemon_images)
+        self.layout_pokedex.addWidget(self.wizard)
+        self.layout_pokedex.setContentsMargins(0, 0, 0, 0)
+    
+    def load_pokemon_images(self, page_id):
+        """Load Pokemon images for current page using concurrent requests"""
+        import concurrent.futures
+        
+        current_page = self.wizard.page(page_id)
+
+        def load_single_image(widget):
+            if isinstance(widget, QLabel):
+                pokemon_index = widget.property("pokemon_index")
+                if pokemon_index is not None:
+                    try:
+                        x = requests.get(res[pokemon_index]["image"]["thumbnail"], stream=True)
+                        image = QImage()
+                        image.loadFromData(x.content)
+                        img = image.scaled(65, 65, Qt.AspectRatioMode.KeepAspectRatio)
+                        widget.setPixmap(QPixmap.fromImage(img))
+                    except:
+                        pass
+
+        widgets = [current_page.layout().itemAt(i).widget() 
+                  for i in range(current_page.layout().count())]
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
+            executor.map(load_single_image, widgets)
+            
 if __name__ == "__main__":
     app = QApplication([])
     win = MyWindow()
