@@ -1,5 +1,7 @@
 from PySide6.QtWidgets import  QLabel, QLineEdit, QFormLayout, QPushButton, QWidget
 
+import json
+
 class Connexion(QWidget) :
     
     def __init__(self, parent=None) :
@@ -21,4 +23,8 @@ class Connexion(QWidget) :
         self.formLayout.addRow(password_label, self.passwordLine)
         self.formLayout.addRow(self.loginButton)
         
+    def login(self): 
+        
+        with open('user.json') as f:
+                contenu = json.load(f)
     
