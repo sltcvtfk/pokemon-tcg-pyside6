@@ -4,7 +4,8 @@ from PySide6.QtCore import *
 from booster import *
 from constante import *
 
-
+with open(POKEDEX, encoding="utf8") as f:
+    res = json.load(f)
 
 class Bouton(QPushButton):
     def __init__(self, parent=None):
@@ -26,6 +27,14 @@ class Scene_Booster(QGraphicsScene):
 class Scene_Pokedex(QGraphicsScene):
     def __init__(self, *args): 
         super().__init__(*args)
+        self.rect = QGraphicsRectItem(0, 0, 375, 680)
+        self.rect.setPos(10, 10)
+        brush = QBrush(QColor(220,220,220))
+        self.rect.setBrush(brush)
+        pen = QPen(QColor(0,0,0))
+        pen.setWidth(1)
+        self.rect.setPen(pen)
+        self.addItem(self.rect)
 
 class Button_Open(QPushButton):
     def __init__(self, parent=None):
@@ -45,7 +54,9 @@ class Button_Open(QPushButton):
 
 class MyWindow(QMainWindow):
     def __init__(self):
-        """ Va afficher la fenêtre principale de l'application en stockant les différentes 
+        """ Hérite de QMainWindow
+        
+        Va afficher la fenêtre principale de l'application en stockant les différentes 
         scènes dans un QStackedWidget, les initialisant puis 
         affichant la scène de booster par défaut.
         
@@ -82,14 +93,13 @@ class MyWindow(QMainWindow):
         """Initialise the pokedex scene
         """
         self.layout_pokedex = QGridLayout()
-        self.button_test = Bouton()
-        self.button_test.clicked.connect(self.salut)
+        self.pages()
         
         widget = QWidget()
         widget.setLayout(self.layout_pokedex)
         self.scene_pokedex.addWidget(widget)
 
-        self.scene_pokedex.addWidget(self.button_test) 
+     
             
     def init_toolbar(self):
         """Initialise the toolbar
@@ -176,44 +186,87 @@ class MyWindow(QMainWindow):
             self.carte.setPos(50,50)
             
     @Slot()
-    def salut(self):
-        """Affiche les 151 premiers pokemons dans le pokedex
-        """
-        with open(POKEDEX, encoding="utf8") as f:
-            res = json.load(f)
+    def pages(self):
+        """Affiche les pokemons dans le pokedex"""
+        self.current_page = 0
+        self.pokemon_per_page = 20
+        self.total_pokemon = 809
+        self.num_pages = (self.total_pokemon // self.pokemon_per_page) + (1 if self.total_pokemon % self.pokemon_per_page != 0 else 0)
         
-        self.wizard = QWizard()
-        self.wizard.setWizardStyle(QWizard.ModernStyle)
-        self.wizard.setOptions(QWizard.NoBackButtonOnStartPage)
+        self.page_widget = QWidget()
+        self.page_widget.setObjectName("page_widget")
+        self.page_widget.setStyleSheet("QWidget#page_widget { border-image: url(./img/motisma_dex.png); border: 1px solid black; }")
         
-        num_pages = (151 // 20) + (1 if 151 % 20 != 0 else 0)
+        self.page_widget.setFixedSize(375, 682)
+        self.page_layout = QVBoxLayout()
+         
         
-        for page_num in range(num_pages):
-            page = QWizardPage()
-            page.setTitle(f"Page {page_num + 1}")
-            layout = QGridLayout()
-            
-            for i in range(20):
-                index = page_num * 20 + i
-                if index >= 151:
-                    break
-            
+        self.pokemon_layout = QGridLayout()
+        self.page_layout.addLayout(self.pokemon_layout)
+        
+        self.button_layout = QHBoxLayout()
+        self.prev_button = QPushButton("Previous")
+        self.prev_button.clicked.connect(self.prev_page)
+        self.next_button = QPushButton("Next")
+        self.next_button.clicked.connect(self.next_page)
+        
+        self.button_layout.addWidget(self.prev_button)
+        self.button_layout.addWidget(self.next_button)
+        self.page_layout.addLayout(self.button_layout)
+        
+        self.page_widget.setLayout(self.page_layout)
+        self.layout_pokedex.addWidget(self.page_widget)
+        
+        self.update_page()
+    def update_page(self):
+        """Met à jour la page actuelle du pokedex"""
+        for i in reversed(range(self.pokemon_layout.count())):
+            self.pokemon_layout.itemAt(i).widget().setParent(None)
+        
+        labels = []
+        for i in range(self.pokemon_per_page):
+            index = self.current_page * self.pokemon_per_page + i
+            if index >= self.total_pokemon:
+                break
             pic = QLabel()
-            x = requests.get(res[index]["image"]["sprite"], stream=True)
+            pic.setFixedSize(65, 65)
+            self.pokemon_layout.addWidget(pic, i // 4, i % 4)
+            labels.append((pic, index))
+        
+        self.prev_button.setEnabled(self.current_page > 0)
+        self.next_button.setEnabled(self.current_page < self.num_pages - 1)
+        
+        self.load_pokemon_images(labels)
+    
+    def load_pokemon_images(self, labels):
+        """Load Pokemon images concurrently"""
+        import concurrent.futures
+
+        def load_single_image(label, index):
+            x = requests.get(res[index]["image"]["thumbnail"], stream=True)
             image = QImage()
             image.loadFromData(x.content)
-            img = image.scaled(40, 40, Qt.AspectRatioMode.KeepAspectRatio)
-            pic.setPixmap(QPixmap.fromImage(img))
-            layout.addWidget(pic, i // 5, i % 5)
-            
-            page.setLayout(layout)
-            self.wizard.addPage(page)
-        
-        self.layout_pokedex.addWidget(self.wizard)
-        
-            
-            
+            img = image.scaled(65, 65, Qt.AspectRatioMode.KeepAspectRatio)
+            label.setPixmap(QPixmap.fromImage(img))
 
+        with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
+            futures = [executor.submit(load_single_image, label, index) for label, index in labels]
+            concurrent.futures.wait(futures)
+
+    
+    def prev_page(self):
+        """Go to the previous page"""
+        if self.current_page > 0:
+            self.current_page -= 1
+            self.update_page()
+    
+    def next_page(self):
+        """Go to the next page"""
+        if self.current_page < self.num_pages - 1:
+            self.current_page += 1
+            self.update_page(
+                
+            )
 if __name__ == "__main__":
     app = QApplication([])
     win = MyWindow()
