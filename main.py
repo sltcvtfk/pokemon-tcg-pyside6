@@ -99,7 +99,7 @@ class MyWindow(QMainWindow):
         self.scene_pokedex.addWidget(widget)
         
         
-        self.searchBar.setGeometry(0, 650, 375, 100)
+        self.searchBar.setGeometry(11, 630, 375, 100)
 
         
         view = QGraphicsView(self.scene_pokedex)
