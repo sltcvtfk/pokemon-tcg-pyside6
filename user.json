@@ -1,0 +1,21 @@
+[   {
+        "connected" : ""
+    },
+    [
+    {
+        "Greg" : {
+                "password": "7397f34388c6e3064a9c0d06924713d32e5a8bcd27d9a848515febd674261e27",
+                "isAdmin": "false", 
+                "pokedex": []
+            }
+    },
+    {
+        "Xavier" : {
+            "password": "3bde3a5999601d8fa7b6bcc6bfdd2ee6a9fb473043d9768fbf8274b5936ef4d2",
+            "isAdmin": "true", 
+            "pokedex": []
+        }
+    }
+    ] 
+]
+
