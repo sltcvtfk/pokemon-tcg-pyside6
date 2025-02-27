@@ -89,12 +89,16 @@ class Searchbar(QWidget) :
                 contenu = json.load(f)
                 
             for pokemon in contenu :
-                p_name_en = [t.lower() for t in pokemon['name']['english']]
-                p_name_fr = [t.lower() for t in pokemon['name']['french']]
-                for poke_en in p_name_en :
+                # p_name_en = [t.lower() for t in pokemon['name']['english']]
+                p_name_fr = [pokemon['name']['french'].lower()]
+                """  for poke_en in p_name_en :
                     if poke_en.startswith(text) :
-                        self.filtered.append(pokemon['id'])
-                for poke_fr in p_name_fr : 
+                        self.filtered.append(pokemon['id']) """
+                for poke_fr in p_name_fr: 
+                    
                     if poke_fr.startswith(text) :
                         self.filtered.append(pokemon['id'])
+                        
+                        
+                
                         
