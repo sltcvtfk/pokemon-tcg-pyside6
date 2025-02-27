@@ -3,7 +3,6 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from booster import *
 from constante import *
-import concurrent.futures
 
 with open(POKEDEX, encoding="utf8") as f:
     res = json.load(f)
@@ -197,7 +196,7 @@ class MyWindow(QMainWindow):
         
         self.page_widget.move(125, 25)
         self.page_layout = QVBoxLayout()
-        self.page_layout
+        
         
         self.pokemon_layout = QGridLayout()
         self.page_layout.addLayout(self.pokemon_layout)
@@ -220,19 +219,16 @@ class MyWindow(QMainWindow):
     def update_page(self):
         """Update the current page with Pokemon images"""
         for i in reversed(range(self.pokemon_layout.count())):
-            self.pokemon_layout.itemAt(i).widget().deleteLater()
+            self.pokemon_layout.itemAt(i).widget().setParent(None)
         
-        def load_image(index):
+        for i in range(self.pokemon_per_page):
+            index = self.current_page * self.pokemon_per_page + i
             if index >= self.total_pokemon:
-                return
+                break
             pic = QLabel()
             pic.setFixedSize(65, 65)
-            self.pokemon_layout.addWidget(pic, index // 4, index % 4)
+            self.pokemon_layout.addWidget(pic, i // 4, i % 4)
             self.load_pokemon_image(pic, index)
-        
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            indices = range(self.current_page * self.pokemon_per_page, (self.current_page + 1) * self.pokemon_per_page)
-            executor.map(load_image, indices)
         
         self.prev_button.setEnabled(self.current_page > 0)
         self.next_button.setEnabled(self.current_page < self.num_pages - 1)
