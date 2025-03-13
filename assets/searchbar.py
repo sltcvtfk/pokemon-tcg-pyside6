@@ -85,15 +85,15 @@ class Searchbar(QWidget) :
         text = text.lower() 
        
 
-        
+        print(text)
         #self.lineEdit.setAlignment(Qt.AlignmentFlag.AlignLeft)
         
         self.filtered = []
         
-        if text in FRENCH_TYPE_TO_ENGLISH_DICT :
+        if text in FRENCH_TYPE_TO_ENGLISH_DICT:
             text = FRENCH_TYPE_TO_ENGLISH_DICT[text]
             
-        
+            
         for pokemon in contenu :          
             if text in FRENCH_TYPE_TO_ENGLISH_DICT.values() :
                 

@@ -3,7 +3,7 @@ from assets.constante import *
 import json
 
 with open(BDD) as f:
-    contenu = json.load(f)
+    data = json.load(f)
     
 class Connexion(QWidget) :
     

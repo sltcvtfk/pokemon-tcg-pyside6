@@ -7,7 +7,10 @@ from assets.booster import *
 from assets.constante import *
 from assets.searchbar import *
 from assets.login import *
+from assets.toolbar import Toolbar
 
+with open(BDD, "r",encoding="utf8") as f:
+    data = json.load(f)
 
 with open(POKEDEX, encoding="utf8") as f:
     res = json.load(f)
@@ -82,14 +85,13 @@ class MyWindow(QMainWindow):
         self.setGeometry(0, 0, 410, 800)
         
         self.setWindowIcon(QIcon("img/pokeball_icon.png"))
-        self.setWindowTitle("Pokemon TCG")
+        self.setWindowTitle("Pokémon TCG")
         
         
         self.my_scenes = QStackedWidget()
         self.my_scenes.setGeometry(0, 0, 400, 700)
         self.setCentralWidget(self.my_scenes)
         self.searchBar = Searchbar()
-        
         
         self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
         self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
@@ -104,7 +106,10 @@ class MyWindow(QMainWindow):
         self.init_pokedex_scene()
         self.init_connexion_scene()
         
-        self.booster_scene()
+        if data['lastConnected'] != "":
+            self.booster_scene()
+        else:
+            self.connexion_scene()
         
     def init_pokedex_scene(self):
         """Initialise the pokedex scene
@@ -136,34 +141,13 @@ class MyWindow(QMainWindow):
         """Initialise the toolbar
         """
         
-        toolbar = QToolBar("Toolbar")
-        toolbar.setMovable(False)
-        toolbar.setFixedHeight(75)
-        toolbar.setIconSize(QSize(50, 50))
-        left_spacer = QWidget()
-        left_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        right_spacer = QWidget()
-        right_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        toolbar.addWidget(right_spacer)
-        self.addToolBar(Qt.BottomToolBarArea, toolbar)
-        actPokedex = QAction(QIcon("img/pokedex_icon.png"), "Pokedex", self)
-        actPokedex.setStatusTip("Pokedex")
-        actPokedex.triggered.connect(self.pokedex_scene)
-        actBooster = QAction(QIcon("img/pokeball_icon.png"), "Booster", self)
-        actBooster.setStatusTip("Booster")
-        actBooster.triggered.connect(self.booster_scene)
-        actUser = QAction(QIcon("img/poketrainer_icon.png"), "User", self)
-        actUser.setStatusTip("User")
-        actUser.triggered.connect(self.connexion_scene)
-        toolbar.addSeparator()
-        toolbar.addAction(actPokedex)
-        toolbar.addSeparator()
-        toolbar.addAction(actBooster)
-        toolbar.addSeparator()
-        toolbar.addAction(actUser)
-        toolbar.addSeparator()
-        toolbar.addWidget(left_spacer)
-        toolbar.addSeparator()
+        self.toolbar = Toolbar()
+        self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
+    
+        self.toolbar.qactions["Pokedex"].triggered.connect(self.pokedex_scene)
+        self.toolbar.qactions["Booster"].triggered.connect(self.booster_scene)
+        self.toolbar.qactions["User"].triggered.connect(self.connexion_scene)
+
         
     def init_booster_scene(self):
         """Initialise the booster scene
