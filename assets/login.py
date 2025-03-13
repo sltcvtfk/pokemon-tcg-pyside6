@@ -53,3 +53,21 @@ class Connexion(QWidget) :
             print("mauvais username")
         
     
+    
+    
+    
+class Logout(QWidget) :
+    
+    
+    def __init__(self, parent=None) :
+        super().__init__(parent)
+    
+        self.disconnectButton = QPushButton('Disconnect')
+        self.disconnectButton.clicked.connect(self.disconnect)
+        
+    def disconnect(self) :
+        
+        contenu['LastConnected'] = ""
+        
+        with open(BDD, "w") as f:
+                json.dump(contenu, f , indent=6)

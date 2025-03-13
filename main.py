@@ -53,6 +53,20 @@ class Scene_Connexion(QGraphicsScene) :
         self.rect.setPen(pen)
         self.addItem(self.rect)
         
+class Scene_logout(QGraphicsScene) :
+    def __init__(self, *args): 
+        super().__init__(*args)
+        self.rect = QGraphicsRectItem(0, 0, 375, 680)
+        self.rect.setPos(10, 10)
+        brush = QBrush(QColor(220,220,220))
+        self.rect.setBrush(brush)
+        pen = QPen(QColor(0,0,0))
+        pen.setWidth(1)
+        self.rect.setPen(pen)
+        self.addItem(self.rect)
+        
+    
+    
 class Button_Open(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
@@ -131,6 +145,10 @@ class MyWindow(QMainWindow):
         self.connexion = Connexion()
         self.connexion.setFixedSize(400, 700)
         self.scene_connexion.addWidget(self.connexion)
+        
+    def init_logout_scene(self) :
+        """Initialise la scène de déconnexion
+        """
             
     def init_toolbar(self):
         """Initialise the toolbar
