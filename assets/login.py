@@ -30,5 +30,26 @@ class Connexion(QWidget) :
         
     def login(self): 
         
-        print("slt")
+        username = self.userLine.text()
+        password = self.passwordLine.text()
+        
+        
+        
+        if username in contenu["Users"] :
+            if password == contenu["Users"][username]['password'] :
+                contenu["LastConnected"] = username
+                
+                with open(BDD, "w") as f:
+                    json.dump(contenu, f , indent=6)
+    
+                
+                
+                print('connected')
+                
+            else :
+                print("mauvais mdp")
+            
+        else :
+            print("mauvais username")
+        
     

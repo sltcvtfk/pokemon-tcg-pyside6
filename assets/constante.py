@@ -24,25 +24,25 @@ TYPE_DICT = {
 }
 
 FRENCH_TYPE_TO_ENGLISH_DICT = {
-    "Eau": "Water",
-    "Feu": "Fire",
-    "Plante": "Grass",
-    "Combat": "Fighting",
-    "Normal": "Normal",
-    "Glace": "Water",
-    "Insecte": "Grass",
-    "Poison": "Dark",
-    "Dragon": "Dragon",
-    "Acier": "Steel",
-    "Psy": "Psychic",
-    "Sol": "Fighting",
-    "Ténèbres": "Dark",
-    "Roche": "Fighting",
-    "Spectre": "Psychic",
-    "Fée": "Psychic",
-    "Vol": "Normal",
-    "Électrik": "Electric"
-}
+    "eau" : "water",
+    "feu" : "fire",
+    "plante" : "grass",
+    "combat" : "fighting",
+    "normal" : "normal",
+    "glace" : "ice",
+    "insecte" : "bug",
+    "poison" : "poison",
+    "dragon" : "dragon",
+    "acier" : "steel",
+    "psy" : "psychic",
+    "sol" : "ground",
+    "ténèbres" : "dark",
+    "roche" : "rock",
+    "spectre" : "ghost",
+    "fée" : "fairy",
+    "vol" : "flying",
+    "électrik" : "electric"
+ }
 
 STAGE1_CARD_DICT = {
     "Fighting": "img/card/stage1/Fighting.png",
