@@ -12,6 +12,9 @@ from assets.login import *
 with open(POKEDEX, encoding="utf8") as f:
     res = json.load(f)
 
+with open(BDD) as f:
+    bdd = json.load(f)
+
 class Bouton(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
@@ -108,6 +111,7 @@ class MyWindow(QMainWindow):
         self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
         self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
         self.scene_connexion = Scene_Connexion(0 ,0 ,400, 700)
+        self.scene_logout = Scene_logout(0,0,400,700)
 
         self.my_scenes.addWidget(QGraphicsView(self.scene_booster))
         self.my_scenes.addWidget(QGraphicsView(self.scene_pokedex))
@@ -149,6 +153,9 @@ class MyWindow(QMainWindow):
     def init_logout_scene(self) :
         """Initialise la scène de déconnexion
         """
+        self.logout = Logout()
+        self.logout.setFixedSize(400, 700)
+        self.scene_logout.addWidget(self.logout)
             
     def init_toolbar(self):
         """Initialise the toolbar
@@ -212,7 +219,10 @@ class MyWindow(QMainWindow):
     def connexion_scene(self):
         """Change any scene to booster scene
         """
-        self.my_scenes.setCurrentIndex(2)
+        if bdd['LastConnected'] == "" :
+            self.my_scenes.setCurrentIndex(2)
+        else :
+            self.my_scenes.setCurrentIndex(3)
 
     @Slot()
     def booster_start(self):
