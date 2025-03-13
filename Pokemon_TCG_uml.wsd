@@ -1,67 +1,95 @@
 @startuml Pokemon
 
 class Pokemon {
-    Nom : str
-    Type : str
-    Génération : int
-    Etat : bool
-    Pokedex_id : int 
+    - Nom : str
+    - Type : str
+    - Génération : int
+    - Etat : bool
+    - Pokedex_id : int 
 
-    get_name()
-    get_type()
-    get_gen()
-    get_id() 
+    + get_name()
+    + get_type()
+    + get_gen()
+    + get_id() 
 }
 
 class Pokedex {
+    - number_of_pokemons : int
 
-    Pokedex()
-    number_of_pokemons() : int
-    search_by_name()
-    search_by_type()
-    search_by_gen()
-    search_by_id()
+    + search_by_name()
+    + search_by_type()
+    + search_by_gen()
+    + search_by_id()
 }
 
 class Interface_UI {
-
-    afficher_menu()
-    afficher_pokedex()
-    afficher_booster()
+    + afficher_menu()
+    + afficher_pokedex()
+    + afficher_booster()
 }
 
 class MyWindow {
+    - avoid : int
+    + init_toolbar()
+    + init_booster_scene()
+    + init_pokedex_scene()
+    + booster_scene()
+    + pokedex_scene()
 }
 
 class Boutons {
+}
 
+class Button_Open {
+    - compte : int
+    + click()
 }
 
 class SearchBar {
-    filter_search()
+    + filter_search()
 }
 
 class Scene {
 }
 
-class Booster {
-    cartes : List < Pokemon >
+class Scene_Booster {
+}
 
-    ouvrir_booster()
+class Scene_Pokedex {
+}
+
+class Booster {
+    - cartes : List[Pokemon]
+    
+    + ouvrir_booster()
+    + affiche_booster()
+    + creation_carte_pokemon()
 }
 
 class Utilisateur {
-    nom: str
-
-
+    - nom: str
 }
 
-Pokedex "1 " o-- " * " Pokemon
-Pokemon "7 " ---* "1 " Booster
+class QStackedWidget {
+    + addWidget()
+    + setCurrentIndex()
+}
+
+Pokedex "1" o-- " * " Pokemon
+Pokemon "7" ---* "1" Booster
 MyWindow --> Interface_UI  
 QMainWindow <|-- MyWindow
 MyWindow --> Scene
+MyWindow --> QStackedWidget
+Scene <|-- Scene_Booster
+Scene <|-- Scene_Pokedex
 SearchBar -- Boutons
 Utilisateur --> Pokedex
 Utilisateur -- Interface_UI
+Booster --> Scene_Booster
+Button_Open --> Scene_Booster
+Button_Open --> Booster
+QStackedWidget --> Scene_Booster
+QStackedWidget --> Scene_Pokedex
+
 @enduml
