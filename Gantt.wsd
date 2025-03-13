@@ -1,0 +1,18 @@
+@startgantt Evan, Romain et StateFontName
+
+Project starts 2025-01-25
+[Début du projet] starts 2025-01-30 and ends 2025-03-06
+
+
+--Répartition des tâches--
+
+
+[Stan] starts 2025-01-25 and ends 2025-01-27
+[Evan] starts 2025-01-25 and ends 2025-01-27
+[Roro] starts 2025-01-25 and ends 2025-01-27
+
+[J-2] starts 2025-01-30 and ends 2025-02-04
+[J-2] starts 3 days after [Stan]'s end 
+[J-2] displays on same row as [Stan]
+
+@endgantt
