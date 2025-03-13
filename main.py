@@ -12,8 +12,7 @@ from assets.login import *
 with open(POKEDEX, encoding="utf8") as f:
     res = json.load(f)
 
-with open(BDD) as f:
-    bdd = json.load(f)
+
 
 class Bouton(QPushButton):
     def __init__(self, parent=None):
@@ -150,13 +149,16 @@ class MyWindow(QMainWindow):
         
         self.connexion = Connexion()
         self.connexion.setFixedSize(400, 700)
+        self.connexion.loginButton.clicked.connect(self.connexion_scene)
         self.scene_connexion.addWidget(self.connexion)
+        
         
     def init_logout_scene(self) :
         """Initialise la scène de déconnexion
         """
         self.logout = Logout()
         self.logout.setFixedSize(400, 700)
+        self.logout.disconnectButton.clicked.connect(self.connexion_scene)
         self.scene_logout.addWidget(self.logout)
             
     def init_toolbar(self):
@@ -221,9 +223,18 @@ class MyWindow(QMainWindow):
     def connexion_scene(self):
         """Change any scene to booster scene
         """
-        if bdd['LastConnected'] == "" :
+        with open(BDD) as f:
+            bdd = json.load(f)
+        
+        if (self.logout.disconnectButton.clicked) or (bdd['LastConnected'] == "" ): 
+            with open(BDD) as f:
+                bdd = json.load(f)
+                
             self.my_scenes.setCurrentIndex(2)
-        else :
+        if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['LastConnected'] != ""):
+            with open(BDD) as f:
+                bdd = json.load(f)
+                
             self.my_scenes.setCurrentIndex(3)
 
     @Slot()

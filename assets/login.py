@@ -31,36 +31,40 @@ class Connexion(QWidget) :
     def login(self): 
         
         username = self.userLine.text()
+        
+        
+        if self.verifLogin() :
+            contenu["LastConnected"] = username
+                
+            with open(BDD, "w") as f:
+                json.dump(contenu, f , indent=6)
+                
+        else :
+                print("Erreur de co")
+        
+        self.userLine.setText("")
+        self.passwordLine.setText("")
+    
+        
+    
+    def verifLogin(self) :
+        username = self.userLine.text()
         password = self.passwordLine.text()
-        
-        
+        answer = False
         
         if username in contenu["Users"] :
             if password == contenu["Users"][username]['password'] :
-                contenu["LastConnected"] = username
-                
-                with open(BDD, "w") as f:
-                    json.dump(contenu, f , indent=6)
-    
-                
-                
-                print('connected')
-                
-            else :
-                print("mauvais mdp")
-            
-        else :
-            print("mauvais username")
-        
-    
-    
-    
-    
+                answer = True
+        return answer
+
 class Logout(QWidget) :
     
     
     def __init__(self, parent=None) :
         super().__init__(parent)
+    
+        with open(BDD) as f:
+            self.contenu = json.load(f)
     
         self.formLayout = QFormLayout()
         self.setLayout(self.formLayout)
