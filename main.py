@@ -56,6 +56,18 @@ class Scene_Connexion(QGraphicsScene) :
         self.rect.setPen(pen)
         self.addItem(self.rect)
         
+class Scene_logout(QGraphicsScene) :
+    def __init__(self, *args): 
+        super().__init__(*args)
+        self.rect = QGraphicsRectItem(0, 0, 375, 680)
+        self.rect.setPos(10, 10)
+        brush = QBrush(QColor(220,220,220))
+        self.rect.setBrush(brush)
+        pen = QPen(QColor(0,0,0))
+        pen.setWidth(1)
+        self.rect.setPen(pen)
+        self.addItem(self.rect)
+        
 class Button_Open(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
@@ -96,15 +108,18 @@ class MyWindow(QMainWindow):
         self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
         self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
         self.scene_connexion = Scene_Connexion(0 ,0 ,400, 700)
+        self.scene_logout = Scene_logout(0,0,400,700)
 
         self.my_scenes.addWidget(QGraphicsView(self.scene_booster))
         self.my_scenes.addWidget(QGraphicsView(self.scene_pokedex))
         self.my_scenes.addWidget(QGraphicsView(self.scene_connexion))
+        self.my_scenes.addWidget(QGraphicsView(self.scene_logout))
         
         self.init_toolbar()
         self.init_booster_scene()
         self.init_pokedex_scene()
         self.init_connexion_scene()
+        self.init_logout_scene()
         
         if data['lastConnected'] != "":
             self.booster_scene()
@@ -129,14 +144,26 @@ class MyWindow(QMainWindow):
         widget.setLayout(self.layout)
 
 
+
     def init_connexion_scene(self) :
         """Initialise la scène de connexion
         """
         
         self.connexion = Connexion()
         self.connexion.setFixedSize(400, 700)
+        self.connexion.loginButton.clicked.connect(self.connexion_scene)
+        self.connexion.loginButton.clicked.connect(self.init_toolbar)
         self.scene_connexion.addWidget(self.connexion)
-            
+        
+    def init_logout_scene(self) :
+        """Initialise la scène de déconnexion
+        """
+        self.logout = Logout()
+        self.logout.setFixedSize(400, 700)
+        self.logout.disconnectButton.clicked.connect(self.connexion_scene)
+        self.logout.disconnectButton.clicked.connect(self.init_toolbar)
+        self.scene_logout.addWidget(self.logout)
+        
     def init_toolbar(self):
         """Initialise the toolbar
         """
@@ -178,7 +205,19 @@ class MyWindow(QMainWindow):
     def connexion_scene(self):
         """Change any scene to booster scene
         """
-        self.my_scenes.setCurrentIndex(2)
+        with open(BDD) as f:
+            bdd = json.load(f)
+        
+        if (self.logout.disconnectButton.clicked) or (bdd['lastConnected'] == "" ): 
+            with open(BDD) as f:
+                bdd = json.load(f)
+                
+            self.my_scenes.setCurrentIndex(2)
+        if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['lastConnected'] != ""):
+            with open(BDD) as f:
+                bdd = json.load(f)
+                
+            self.my_scenes.setCurrentIndex(3)
 
     @Slot()
     def booster_start(self):
@@ -246,26 +285,6 @@ class MyWindow(QMainWindow):
      
         self.update_page()
         
-    # def update_page(self):
-    #     """Met à jour la page actuelle du pokedex"""
-    #     for i in reversed(range(self.pokemon_layout.count())):
-    #         self.pokemon_layout.itemAt(i).widget().setParent(None)
-        
-    #     labels = []
-    #     for i in range(self.pokemon_per_page):
-    #         index = self.current_page * self.pokemon_per_page + i
-    #         if index >= self.total_pokemon:
-    #             break
-    #         pic = QLabel()
-    #         pic.setFixedSize(65, 65)
-    #         self.pokemon_layout.addWidget(pic, i // 4, i % 4)
-    #         labels.append((pic, index))
-        
-    #     self.prev_button.setEnabled(self.current_page > 0)
-    #     self.next_button.setEnabled(self.current_page < self.num_pages - 1)
-        
-    #     self.load_pokemon_images(labels)
-        
     def update_page(self):
         """Met à jour la page actuelle du Pokédex"""
         
@@ -301,7 +320,7 @@ class MyWindow(QMainWindow):
                         
         self.prev_button.setEnabled(self.current_page > 0)        
         self.load_pokemon_images(labels)
-    
+        
     def load_pokemon_images(self, labels):
         """Load Pokemon images concurrently"""
         
@@ -310,6 +329,12 @@ class MyWindow(QMainWindow):
             image = QImage()
             image.loadFromData(x.content)
             img = image.scaled(65, 65, Qt.AspectRatioMode.KeepAspectRatio)
+    
+            if res[index]["id"] in data["users"][data["lastConnected"]]["pokedex"]:
+                img = img.convertToFormat(QImage.Format_ARGB32)
+            else:
+                img = img.convertToFormat(QImage.Format_Alpha8)
+                
             label.setPixmap(QPixmap.fromImage(img))
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:

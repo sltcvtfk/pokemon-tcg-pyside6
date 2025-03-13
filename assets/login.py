@@ -3,7 +3,7 @@ from assets.constante import *
 import json
 
 with open(BDD) as f:
-    data = json.load(f)
+    contenu = json.load(f)
     
 class Connexion(QWidget) :
     
@@ -30,5 +30,54 @@ class Connexion(QWidget) :
         
     def login(self): 
         
-        print("slt")
+        username = self.userLine.text()
+        
+        
+        if self.verifLogin() :
+            contenu["lastConnected"] = username
+                
+            with open(BDD, "w") as f:
+                json.dump(contenu, f , indent=6)
+                
+        else :
+                print("Erreur de co")
+        
+        self.userLine.setText("")
+        self.passwordLine.setText("")
     
+        
+    
+    def verifLogin(self) :
+        username = self.userLine.text()
+        password = self.passwordLine.text()
+        answer = False
+        
+        if username in contenu["users"] :
+            if password == contenu["users"][username]['password'] :
+                answer = True
+        return answer
+
+class Logout(QWidget) :
+    
+    
+    def __init__(self, parent=None) :
+        super().__init__(parent)
+    
+        with open(BDD) as f:
+            self.contenu = json.load(f)
+    
+        self.formLayout = QFormLayout()
+        self.setLayout(self.formLayout)
+    
+        self.disconnectButton = QPushButton('Disconnect')
+        self.disconnectButton.clicked.connect(self.disconnect)
+        
+        self.formLayout.addRow(self.disconnectButton)
+        self.formLayout
+        
+    def disconnect(self) :
+        
+        contenu['lastConnected'] = ""
+        
+        with open(BDD, "w") as f:
+                json.dump(contenu, f , indent=6)
