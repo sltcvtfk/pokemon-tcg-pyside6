@@ -116,11 +116,13 @@ class MyWindow(QMainWindow):
         self.my_scenes.addWidget(QGraphicsView(self.scene_booster))
         self.my_scenes.addWidget(QGraphicsView(self.scene_pokedex))
         self.my_scenes.addWidget(QGraphicsView(self.scene_connexion))
+        self.my_scenes.addWidget(QGraphicsView(self.scene_logout))
         
         self.init_toolbar()
         self.init_booster_scene()
         self.init_pokedex_scene()
         self.init_connexion_scene()
+        self.init_logout_scene()
         
         self.booster_scene()
         

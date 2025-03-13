@@ -62,8 +62,14 @@ class Logout(QWidget) :
     def __init__(self, parent=None) :
         super().__init__(parent)
     
+        self.formLayout = QFormLayout()
+        self.setLayout(self.formLayout)
+    
         self.disconnectButton = QPushButton('Disconnect')
         self.disconnectButton.clicked.connect(self.disconnect)
+        
+        self.formLayout.addRow(self.disconnectButton)
+        self.formLayout
         
     def disconnect(self) :
         
