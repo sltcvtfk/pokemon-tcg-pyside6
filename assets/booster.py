@@ -202,6 +202,16 @@ class Booster():
         
         my_pokemon = Pokemon(pokedex_id)
         
+        # Add pokémon to the user list
+        with open("json/bdd.json", "r+", encoding="utf8") as file:
+            data = json.load(file)
+            last_connected_user = data["users"][data["lastConnected"]]
+            if not pokedex_id in last_connected_user["pokedex"]:
+                last_connected_user["pokedex"].append(pokedex_id)
+            file.seek(0)
+            json.dump(data, file, indent=2, ensure_ascii=False)
+            file.truncate()
+        
         if my_pokemon.has_prev_evolution():
             if my_pokemon.prev_evo_has_prev_evo():
                 carte = self.load_carte_image(pokedex_id, 2)

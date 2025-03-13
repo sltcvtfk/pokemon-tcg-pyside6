@@ -1,9 +1,16 @@
-from PySide6.QtWidgets import  QLabel, QLineEdit, QFormLayout, QPushButton, QWidget
+from PySide6.QtWidgets import  *
+from PySide6.QtCore import *
 from assets.constante import *
+import sys
 import json
 
 with open(BDD) as f:
     contenu = json.load(f)
+    
+def restart():
+    QCoreApplication.quit()
+    status = QProcess.startDetached(sys.executable, sys.argv)
+    print(status)
     
 class Connexion(QWidget) :
     
@@ -27,6 +34,7 @@ class Connexion(QWidget) :
         self.formLayout.addRow(password_label, self.passwordLine)
         self.formLayout.addRow(self.loginButton)
         self.formLayout
+        self.loginButton.clicked.connect(restart)
         
     def login(self): 
         
@@ -74,6 +82,7 @@ class Logout(QWidget) :
         
         self.formLayout.addRow(self.disconnectButton)
         self.formLayout
+        self.disconnectButton.clicked.connect(restart)
         
     def disconnect(self) :
         
