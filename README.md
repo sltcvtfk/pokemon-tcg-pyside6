@@ -10,7 +10,7 @@ Ce projet est une application graphique basée sur PySide6 permettant de simuler
 - **Ouverture de boosters** : Simulation de l'ouverture d'un booster contenant plusieurs cartes Pokémon.
 - **Interface utilisateur** : Navigation fluide entre les différentes scènes via une barre d'outils.
 
-## Installation
+## Installation 
 
 ### Prérequis
 
