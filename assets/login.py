@@ -1,9 +1,17 @@
-from PySide6.QtWidgets import  QLabel, QLineEdit, QFormLayout, QPushButton, QWidget
+from PySide6.QtWidgets import  *
+from PySide6.QtCore import *
 from assets.constante import *
+import sys
 import json
+import hashlib
 
 with open(BDD) as f:
     contenu = json.load(f)
+    
+def restart():
+    QCoreApplication.quit()
+    status = QProcess.startDetached(sys.executable, sys.argv)
+    print(status)
     
 class Connexion(QWidget) :
     
@@ -27,6 +35,7 @@ class Connexion(QWidget) :
         self.formLayout.addRow(password_label, self.passwordLine)
         self.formLayout.addRow(self.loginButton)
         self.formLayout
+        self.loginButton.clicked.connect(restart)
         
     def login(self): 
         
@@ -34,7 +43,7 @@ class Connexion(QWidget) :
         
         
         if self.verifLogin() :
-            contenu["LastConnected"] = username
+            contenu["lastConnected"] = username
                 
             with open(BDD, "w") as f:
                 json.dump(contenu, f , indent=6)
@@ -48,12 +57,18 @@ class Connexion(QWidget) :
         
     
     def verifLogin(self) :
+
         username = self.userLine.text()
         password = self.passwordLine.text()
+
+        sha512 = hashlib.sha512() #Hachage du mot de passe pour le vérifier
+        sha512.update(bytes(password, 'utf-8'))
+        password = sha512.hexdigest()
+
         answer = False
         
-        if username in contenu["Users"] :
-            if password == contenu["Users"][username]['password'] :
+        if username in contenu["users"] :
+            if password == contenu["users"][username]['password'] :
                 answer = True
         return answer
 
@@ -74,10 +89,11 @@ class Logout(QWidget) :
         
         self.formLayout.addRow(self.disconnectButton)
         self.formLayout
+        self.disconnectButton.clicked.connect(restart)
         
     def disconnect(self) :
         
-        contenu['LastConnected'] = ""
+        contenu['lastConnected'] = ""
         
         with open(BDD, "w") as f:
                 json.dump(contenu, f , indent=6)
