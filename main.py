@@ -195,6 +195,8 @@ class MyWindow(QMainWindow):
     def pokedex_scene(self):
         """Change any scene to pokedex scene
         """
+        self.update_page()
+        self.update_pokedex_data()
         self.my_scenes.setCurrentIndex(1)
     
     def booster_scene(self):
@@ -248,6 +250,12 @@ class MyWindow(QMainWindow):
             self.scene_booster.removeItem(self.carte)
             self.carte = self.scene_booster.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
             self.carte.setPos(50,50)
+
+    def update_pokedex_data(self):
+        """Update the pokedex data"""
+        with open(BDD, "r", encoding="utf8") as f:
+            global data
+            data = json.load(f)
             
     @Slot()
     def pages(self):
