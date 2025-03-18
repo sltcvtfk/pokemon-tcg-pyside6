@@ -2,22 +2,13 @@
   "lastConnected": "Stan",
   "users": {
     "Stan": {
-      "password": "1234",
+      "password": "d404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db",
       "isAdmin": true,
       "pokedex": [
-        522,
-        183,
-        208,
-        549,
-        554,
-        603,
-        53,
-        467,
-        256
       ]
     },
     "Gregouz": {
-      "password": "1230",
+      "password": "2c438800b1837ad2561f0013da0e150e558f68fae5bc533d26e5580d0ba4ff1549be2904328f6c9a399a01df9fc336041d011e4e7568cede9ec02dd30ced265c",
       "isAdmin": false,
       "pokedex": [
         1,

@@ -1,6 +1,6 @@
 import random
 import concurrent.futures
-from PySide6.QtGui import*
+from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from assets.booster import *
@@ -94,6 +94,13 @@ class MyWindow(QMainWindow):
         
         """
         super().__init__()
+        
+        # screen_size = app.primaryScreen().availableGeometry()
+        # (self.screen_width, self.screen_height) = (screen_size.width(), screen_size.height())
+        
+        
+        
+        # self.setGeometry(0, 0, round(self.screen_width/4.7), round(self.screen_height/1.35))
         self.setGeometry(0, 0, 410, 800)
         
         self.setWindowIcon(QIcon("img/pokeball_icon.png"))
@@ -195,8 +202,8 @@ class MyWindow(QMainWindow):
     def pokedex_scene(self):
         """Change any scene to pokedex scene
         """
-        self.update_page()
         self.update_pokedex_data()
+        self.update_page()
         self.my_scenes.setCurrentIndex(1)
     
     def booster_scene(self):
@@ -366,6 +373,10 @@ if __name__ == "__main__":
     app = QApplication([])
     win = MyWindow()
     win.show()
+    
+    center = QScreen.availableGeometry(QApplication.primaryScreen()).center()
+    win.move(center - win.rect().center())
+    
     app.exec()
 
 

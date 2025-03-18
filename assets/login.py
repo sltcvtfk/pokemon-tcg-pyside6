@@ -3,6 +3,7 @@ from PySide6.QtCore import *
 from assets.constante import *
 import sys
 import json
+import hashlib
 
 with open(BDD) as f:
     contenu = json.load(f)
@@ -58,6 +59,10 @@ class Connexion(QWidget) :
     def verifLogin(self) :
         username = self.userLine.text()
         password = self.passwordLine.text()
+        
+        sha512 = hashlib.sha512()
+        sha512.update(bytes(password, 'utf-8'))
+        password = sha512.hexdigest()
         answer = False
         
         if username in contenu["users"] :
