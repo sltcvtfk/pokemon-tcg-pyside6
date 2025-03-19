@@ -86,6 +86,18 @@ class Pokemon():
             if self.pokedex_id >= start and self.pokedex_id <= end:
                 return i+1     
     
+    def evolution(self):
+        """
+            Returns:
+                int: Pokedex ID of the next evolution
+        """
+        if len(res[self.pokedex_id-1]["evolution"]) != 0:
+            if "next" in res[self.pokedex_id-1]["evolution"]:
+                return int(res[self.pokedex_id-1]["evolution"]["next"][0])
+            else:
+                return None
+        else:
+            return None
     def has_prev_evolution(self):
         """ 
             Returns: 
@@ -112,6 +124,17 @@ class Pokemon():
         if "prev" in res[prev-1]["evolution"]:
             return True
         return False
+    
+    def image_links(self):
+        """
+            Returns:
+                str: Path to the image of the pokemon
+        """
+        return {
+            "sprite": res[self.pokedex_id-1]["image"]["sprite"],
+            "hires": res[self.pokedex_id-1]["image"]["hires"],
+            "thumbnail": res[self.pokedex_id-1]["image"]["thumbnail"]
+        }
         
     def __repr__(self):
         return f"{self.english_name()} ({self.french_name()})\nPV: {self.hp()}\nType: {self.his_type()}\nWeakness: {self.weakness()}\nGeneration: {self.generation()}"

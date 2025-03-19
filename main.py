@@ -8,6 +8,7 @@ from assets.constante import *
 from assets.searchbar import *
 from assets.login import *
 from assets.toolbar import Toolbar
+from assets.pokeinfo import Pokeinfo
 
 with open(BDD, "r",encoding="utf8") as f:
     data = json.load(f)
@@ -18,8 +19,6 @@ with open(POKEDEX, encoding="utf8") as f:
 class Bouton(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
-        
-
 
 
 class Scene_Booster(QGraphicsScene):
@@ -308,7 +307,7 @@ class MyWindow(QMainWindow):
         for i in reversed(range(self.pokemon_layout.count())):
             self.pokemon_layout.itemAt(i).widget().setParent(None)
             
-        labels = []
+        buttons = []
         
         if self.searchBar.filtered == []:
             total_pokemon = self.total_pokemon
@@ -327,36 +326,46 @@ class MyWindow(QMainWindow):
                 break
             else:
                 self.next_button.setEnabled(self.current_page < self.last_page)
-            pic = QLabel()
-            pic.setFixedSize(65, 65)
-            self.pokemon_layout.addWidget(pic, i // 4, i % 4)
+            button = QPushButton()
+            button.setFixedSize(65, 65)
+            button.setStyleSheet("background: transparent; border: none;")  # Make button transparent except for the image
+            button.clicked.connect(lambda _, poke_id=index: self.show_pokemon(poke_id))
+            self.pokemon_layout.addWidget(button, i // 4, i % 4)
             if self.searchBar.filtered == []:
-                labels.append((pic, index))
+                buttons.append((button, index))
             else:
-                labels.append((pic, self.searchBar.filtered[index] - 1))
+                buttons.append((button, self.searchBar.filtered[index] - 1))
                         
         self.prev_button.setEnabled(self.current_page > 0)        
-        self.load_pokemon_images(labels)
+        self.load_pokemon_images(buttons)
         
-    def load_pokemon_images(self, labels):
-        """Load Pokemon images concurrently"""
+    def load_pokemon_images(self, buttons):
+        """Load Pokemon images concurrently and set them as button icons"""
         
-        def load_single_image(label, index):
+        def load_single_image(button, index):
             x = requests.get(res[index]["image"]["thumbnail"], stream=True)
             image = QImage()
             image.loadFromData(x.content)
             img = image.scaled(65, 65, Qt.AspectRatioMode.KeepAspectRatio)
-    
+        
             if res[index]["id"] in data["users"][data["lastConnected"]]["pokedex"]:
                 img = img.convertToFormat(QImage.Format_ARGB32)
             else:
                 img = img.convertToFormat(QImage.Format_Alpha8)
                 
-            label.setPixmap(QPixmap.fromImage(img))
+            button.setIcon(QIcon(QPixmap.fromImage(img)))
+            
+            button.setIconSize(QSize(60, 60))
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
-            futures = [executor.submit(load_single_image, label, index) for label, index in labels]
+            futures = [executor.submit(load_single_image, button, index) for button, index in buttons]
             concurrent.futures.wait(futures)
+            
+    def show_pokemon(self, index):
+        """Affiche le pokémon sélectionné"""
+        # print(f"L'ID du Pokémon est : {res[index]['id']}")
+        self.pokemon = Pokeinfo(res[index]["id"])
+        self.pokemon.show()
 
     
     def prev_page(self):
