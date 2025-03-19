@@ -18,6 +18,8 @@ with open(POKEDEX, encoding="utf8") as f:
 class Bouton(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
+        
+
 
 
 class Scene_Booster(QGraphicsScene):
@@ -203,7 +205,6 @@ class MyWindow(QMainWindow):
         """Change any scene to pokedex scene
         """
         self.update_pokedex_data()
-        self.update_page()
         self.my_scenes.setCurrentIndex(1)
     
     def booster_scene(self):
@@ -263,6 +264,7 @@ class MyWindow(QMainWindow):
         with open(BDD, "r", encoding="utf8") as f:
             global data
             data = json.load(f)
+        self.update_page()
             
     @Slot()
     def pages(self):
