@@ -1,0 +1,115 @@
+@startuml Pokemon
+
+class Pokemon {
+    Nom : str
+    Type : str
+    Génération : int
+    Etat : bool
+    pokedex_id : int 
+
+    get_name()
+    get_type()
+    get_gen()
+    get_id() 
+}
+
+class add_pokemon{
+}
+
+class Pokedex {
+    number_of_pokemons : int
+
+    search_by_name()
+    search_by_type()
+    search_by_gen()
+    search_by_id()
+}
+
+class Poke_info{
+    update_data()
+}
+class Interface_UI {
+    afficher_menu()
+    afficher_pokedex()
+    afficher_booster()
+}
+
+class MyWindow {
+    avoid : int
+    init_toolbar()
+    init_booster_scene()
+    init_pokedex_scene()
+    booster_scene()
+    pokedex_scene()
+    show_info_pokemon()
+    show_pokemon()
+}
+
+class Boutons {
+}
+
+class Button_Open {
+    compte : int
+    click()
+}
+
+class SearchBar {
+    filter_search()
+}
+
+class Scene {
+}
+
+class Scene_Booster {
+}
+
+class Scene_Pokedex {
+}
+
+class Scene_Connexion {
+    }
+
+class Scene_logout {
+}
+
+
+class Booster {
+    cartes : List[Pokemon]
+    
+    ouvrir_booster()
+    affiche_booster()
+    creation_carte_pokemon()
+
+}
+
+class Utilisateur {
+    nom: str
+}
+
+class QStackedWidget {
+    addWidget()
+    setCurrentIndex()
+}
+
+Pokedex "    1    " o-- "         *  " Pokemon
+Pokemon "7  " ---* "1" Booster
+Pokemon -- add_pokemon
+MyWindow --> Interface_UI  
+QMainWindow <|-- MyWindow
+MyWindow --> Scene
+MyWindow --> QStackedWidget
+MyWindow --> Scene_Booster
+MyWindow --> Scene_Pokedex
+MyWindow --> Scene_Connexion
+MyWindow --> Scene_logout
+SearchBar -- Boutons
+Utilisateur --> Pokedex
+Utilisateur -- Interface_UI
+Booster --> Scene_Booster
+Button_Open --> Scene_Booster
+Button_Open --> Booster
+QStackedWidget --> Scene_Booster
+QStackedWidget --> Scene_Pokedex
+
+
+@enduml
