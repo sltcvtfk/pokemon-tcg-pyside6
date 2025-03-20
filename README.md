@@ -74,6 +74,7 @@ python main.py
 
 ## Auteurs et avancée du projet
 ![alt text](image-2.png)
+
 -<span style="color:red">
 **STAN SALOMON** 
 </span> || [**@sltcvtfk**](https://github.com/sltcvtfk)
