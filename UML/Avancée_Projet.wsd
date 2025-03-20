@@ -1,0 +1,31 @@
+@startgantt pokemon
+Project starts 2025-01-25
+
+[Durée du projet] starts 2025-01-25 and ends 2025-03-20
+
+--Répartition des tâches--
+
+[resume] starts 2025-01-25 and ends 2025-01-28
+
+[S-1: Initialisation du projet] starts 2025-02-01 and ends 2025-02-09
+[S-1] starts 2 days after [resume]'s end and ends 8 day before [S-1: Initialisation du projet]'s end
+[S-1] displays on same row as [resume]
+
+[S-2: Développement UI] starts 2025-02-10 and ends 2025-02-17
+[S-2] starts 6 day after [S-1]'s end and ends 8 day before [S-2: Développement UI]'s end
+
+[S-3: Intégration des scènes] starts 2025-02-18 and ends 2025-02-27
+[S-3] starts 6 day after [S-2]'s end and ends 10 day before [S-3: Intégration des scènes]'s end
+
+[S-4: Implémentation Base de Données] starts 2025-02-28 and ends 2025-03-13
+[S-4] starts 8 day after [S-3]'s end and ends 14 day before [S-4: Implémentation Base de Données]'s end
+
+[S-5: Tests et Debug] starts 2025-03-14 and ends 2025-03-20
+[S-5] starts 11 day after [S-4]'s end and ends 5 day before [S-5: Tests et Debug]'s end
+
+[Documentation : PlantUML, Gantt, README, etc...] starts 2025-02-01 and ends 2025-03-20
+[S-5] starts 1 day after [S-4]'s end and ends 8 day before [Documentation : PlantUML, Gantt, README, etc...]'s end
+
+--Fin de la répartition des tâches--
+
+@endgantt
