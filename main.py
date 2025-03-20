@@ -1,23 +1,36 @@
 import random
 import concurrent.futures
-from PySide6.QtGui import*
+from PySide6.QtGui import *
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from assets.booster import *
 from assets.constante import *
 from assets.searchbar import *
 from assets.login import *
+from assets.toolbar import Toolbar
+from assets.pokeinfo import Pokeinfo
 
+with open(BDD, "r",encoding="utf8") as f:
+    data = json.load(f)
 
 with open(POKEDEX, encoding="utf8") as f:
     res = json.load(f)
-
-
-
-class Bouton(QPushButton):
+    
+class addPokemon(QPushButton):
+    right_click = Signal()
+    left_click = Signal()
+    
     def __init__(self, parent=None):
         super().__init__()
-
+    
+    def mousePressEvent(self, e):
+        print(e.button())
+        if e.button() == Qt.LeftButton:
+            print("slt")
+            self.left_click.emit()
+        else:
+            print("sltd")
+            self.right_click.emit()
 
 class Scene_Booster(QGraphicsScene):
     def __init__(self, *args): 
@@ -67,8 +80,6 @@ class Scene_logout(QGraphicsScene) :
         self.rect.setPen(pen)
         self.addItem(self.rect)
         
-    
-    
 class Button_Open(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
@@ -95,6 +106,13 @@ class MyWindow(QMainWindow):
         
         """
         super().__init__()
+        
+        # screen_size = app.primaryScreen().availableGeometry()
+        # (self.screen_width, self.screen_height) = (screen_size.width(), screen_size.height())
+        
+        
+        
+        # self.setGeometry(0, 0, round(self.screen_width/4.7), round(self.screen_height/1.35))
         self.setGeometry(0, 0, 410, 800)
         
         self.setWindowIcon(QIcon("img/pokeball_icon.png"))
@@ -105,7 +123,6 @@ class MyWindow(QMainWindow):
         self.my_scenes.setGeometry(0, 0, 400, 700)
         self.setCentralWidget(self.my_scenes)
         self.searchBar = Searchbar()
-        
         
         self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
         self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
@@ -123,7 +140,10 @@ class MyWindow(QMainWindow):
         self.init_connexion_scene()
         self.init_logout_scene()
         
-        self.booster_scene()
+        if data['lastConnected'] != "":
+            self.booster_scene()
+        else:
+            self.connexion_scene()
         
     def init_pokedex_scene(self):
         """Initialise the pokedex scene
@@ -143,6 +163,7 @@ class MyWindow(QMainWindow):
         widget.setLayout(self.layout)
 
 
+
     def init_connexion_scene(self) :
         """Initialise la scène de connexion
         """
@@ -150,8 +171,8 @@ class MyWindow(QMainWindow):
         self.connexion = Connexion()
         self.connexion.setFixedSize(400, 700)
         self.connexion.loginButton.clicked.connect(self.connexion_scene)
+        self.connexion.loginButton.clicked.connect(self.init_toolbar)
         self.scene_connexion.addWidget(self.connexion)
-        
         
     def init_logout_scene(self) :
         """Initialise la scène de déconnexion
@@ -159,40 +180,20 @@ class MyWindow(QMainWindow):
         self.logout = Logout()
         self.logout.setFixedSize(400, 700)
         self.logout.disconnectButton.clicked.connect(self.connexion_scene)
+        self.logout.disconnectButton.clicked.connect(self.init_toolbar)
         self.scene_logout.addWidget(self.logout)
-            
+        
     def init_toolbar(self):
         """Initialise the toolbar
         """
         
-        toolbar = QToolBar("Toolbar")
-        toolbar.setMovable(False)
-        toolbar.setFixedHeight(75)
-        toolbar.setIconSize(QSize(50, 50))
-        left_spacer = QWidget()
-        left_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        right_spacer = QWidget()
-        right_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        toolbar.addWidget(right_spacer)
-        self.addToolBar(Qt.BottomToolBarArea, toolbar)
-        actPokedex = QAction(QIcon("img/pokedex_icon.png"), "Pokedex", self)
-        actPokedex.setStatusTip("Pokedex")
-        actPokedex.triggered.connect(self.pokedex_scene)
-        actBooster = QAction(QIcon("img/pokeball_icon.png"), "Booster", self)
-        actBooster.setStatusTip("Booster")
-        actBooster.triggered.connect(self.booster_scene)
-        actUser = QAction(QIcon("img/poketrainer_icon.png"), "User", self)
-        actUser.setStatusTip("User")
-        actUser.triggered.connect(self.connexion_scene)
-        toolbar.addSeparator()
-        toolbar.addAction(actPokedex)
-        toolbar.addSeparator()
-        toolbar.addAction(actBooster)
-        toolbar.addSeparator()
-        toolbar.addAction(actUser)
-        toolbar.addSeparator()
-        toolbar.addWidget(left_spacer)
-        toolbar.addSeparator()
+        self.toolbar = Toolbar()
+        self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
+    
+        self.toolbar.qactions["Pokedex"].triggered.connect(self.pokedex_scene)
+        self.toolbar.qactions["Booster"].triggered.connect(self.booster_scene)
+        self.toolbar.qactions["User"].triggered.connect(self.connexion_scene)
+
         
     def init_booster_scene(self):
         """Initialise the booster scene
@@ -213,25 +214,26 @@ class MyWindow(QMainWindow):
     def pokedex_scene(self):
         """Change any scene to pokedex scene
         """
+        self.update_pokedex_data()
         self.my_scenes.setCurrentIndex(1)
     
     def booster_scene(self):
         """Change any scene to booster scene
         """
         self.my_scenes.setCurrentIndex(0)
- 
+
     def connexion_scene(self):
         """Change any scene to booster scene
         """
         with open(BDD) as f:
             bdd = json.load(f)
         
-        if (self.logout.disconnectButton.clicked) or (bdd['LastConnected'] == "" ): 
+        if (self.logout.disconnectButton.clicked) or (bdd['lastConnected'] == "" ): 
             with open(BDD) as f:
                 bdd = json.load(f)
                 
             self.my_scenes.setCurrentIndex(2)
-        if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['LastConnected'] != ""):
+        if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['lastConnected'] != ""):
             with open(BDD) as f:
                 bdd = json.load(f)
                 
@@ -266,6 +268,13 @@ class MyWindow(QMainWindow):
             self.scene_booster.removeItem(self.carte)
             self.carte = self.scene_booster.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
             self.carte.setPos(50,50)
+
+    def update_pokedex_data(self):
+        """Update the pokedex data"""
+        with open(BDD, "r", encoding="utf8") as f:
+            global data
+            data = json.load(f)
+        self.update_page()
             
     @Slot()
     def pages(self):
@@ -300,39 +309,19 @@ class MyWindow(QMainWindow):
         self.page_widget.setLayout(self.page_layout)
         self.layout_pokedex.addWidget(self.page_widget)
         self.pokemon_layout.setContentsMargins(32, 130, 32, 32)
-     
+
         self.update_page()
-        
-    # def update_page(self):
-    #     """Met à jour la page actuelle du pokedex"""
-    #     for i in reversed(range(self.pokemon_layout.count())):
-    #         self.pokemon_layout.itemAt(i).widget().setParent(None)
-        
-    #     labels = []
-    #     for i in range(self.pokemon_per_page):
-    #         index = self.current_page * self.pokemon_per_page + i
-    #         if index >= self.total_pokemon:
-    #             break
-    #         pic = QLabel()
-    #         pic.setFixedSize(65, 65)
-    #         self.pokemon_layout.addWidget(pic, i // 4, i % 4)
-    #         labels.append((pic, index))
-        
-    #     self.prev_button.setEnabled(self.current_page > 0)
-    #     self.next_button.setEnabled(self.current_page < self.num_pages - 1)
-        
-    #     self.load_pokemon_images(labels)
         
     def update_page(self):
         """Met à jour la page actuelle du Pokédex"""
         
         for i in reversed(range(self.pokemon_layout.count())):
             self.pokemon_layout.itemAt(i).widget().setParent(None)
-            
-        labels = []
+        buttons = []
         
         if self.searchBar.filtered == []:
             total_pokemon = self.total_pokemon
+
         else:
             total_pokemon = len(self.searchBar.filtered)
         
@@ -340,38 +329,81 @@ class MyWindow(QMainWindow):
         
         if self.current_page >= self.last_page:
             self.current_page = self.last_page
-        
+
+            
         for i in range(self.pokemon_per_page):
+            
             index = self.current_page * self.pokemon_per_page + i
             if index >= total_pokemon:
                 self.next_button.setDisabled(index >= total_pokemon)
                 break
             else:
                 self.next_button.setEnabled(self.current_page < self.last_page)
-            pic = QLabel()
-            pic.setFixedSize(65, 65)
-            self.pokemon_layout.addWidget(pic, i // 4, i % 4)
-            if self.searchBar.filtered == []:
-                labels.append((pic, index))
-            else:
-                labels.append((pic, self.searchBar.filtered[index] - 1))
-                        
-        self.prev_button.setEnabled(self.current_page > 0)        
-        self.load_pokemon_images(labels)
-    
-    def load_pokemon_images(self, labels):
-        """Load Pokemon images concurrently"""
+            
         
-        def load_single_image(label, index):
+            button = addPokemon()
+            button.setFixedSize(65, 65)
+            button.setStyleSheet("background: transparent; border: none;")  # Make button transparent except for the image
+            button.left_click.connect(lambda poke=index: self.show_info_pokemon(poke))
+            button.right_click.connect(lambda poke=index: self.show_pokemon(poke))
+            self.pokemon_layout.addWidget(button, i // 4, i % 4)
+            if self.searchBar.filtered == []:
+                buttons.append((button, index))
+            else:
+                buttons.append((button, self.searchBar.filtered[index] - 1))
+                        
+            
+
+        self.prev_button.setEnabled(self.current_page > 0)        
+        self.load_pokemon_images(buttons)
+        
+    def load_pokemon_images(self, buttons):
+        
+        """Load Pokemon images concurrently and set them as button icons"""
+        
+        def load_single_image(button, index):
             x = requests.get(res[index]["image"]["thumbnail"], stream=True)
             image = QImage()
             image.loadFromData(x.content)
             img = image.scaled(65, 65, Qt.AspectRatioMode.KeepAspectRatio)
-            label.setPixmap(QPixmap.fromImage(img))
+        
+            if res[index]["id"] in data["users"][data["lastConnected"]]["pokedex"]:
+                img = img.convertToFormat(QImage.Format_ARGB32)
+            else:
+                img = img.convertToFormat(QImage.Format_Alpha8)
+                
+            button.setIcon(QIcon(QPixmap.fromImage(img)))
+            
+            button.setIconSize(QSize(60, 60))
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=30) as executor:
-            futures = [executor.submit(load_single_image, label, index) for label, index in labels]
+        with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
+            futures = [executor.submit(load_single_image, button, index) for button, index in buttons]
             concurrent.futures.wait(futures)
+            
+    def show_info_pokemon(self, index):
+        """Affiche le pokémon sélectionné"""
+        # print(f"L'ID du Pokémon est : {res[index]['id']}")
+        self.pokemon = Pokeinfo(res[index]["id"])
+        self.pokemon.show()
+    def show_pokemon(self, index):
+        print("slt")
+        with open("json/bdd.json", "w", encoding="utf8") as file:
+            
+            user = data['users'][data['lastConnected']]
+        
+            if int(res[index]["id"]) not in user['pokedex']:
+                user['pokedex'].append(int(res[index]["id"]))
+            elif int(res[index]["id"]) in user['pokedex']:
+                user['pokedex'].remove(int(res[index]["id"]))
+        
+            json.dump(data, file, indent=2, ensure_ascii=False)
+        self.update_pokedex_data()
+
+            
+            
+            
+            
+            
 
     
     def prev_page(self):
@@ -390,6 +422,10 @@ if __name__ == "__main__":
     app = QApplication([])
     win = MyWindow()
     win.show()
+    
+    center = QScreen.availableGeometry(QApplication.primaryScreen()).center()
+    win.move(center - win.rect().center())
+    
     app.exec()
 
 
