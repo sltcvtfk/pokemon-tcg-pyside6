@@ -41,7 +41,7 @@ python main.py
 
 ## Architecture du Projet
 
-![alt text](image-1.png)
+![alt text](image-3.png)
 
 ```
 📂 pokemon-tcg       
@@ -74,7 +74,6 @@ python main.py
 
 ## Auteurs et avancée du projet
 ![alt text](image-2.png)
-
 -<span style="color:red">
 **STAN SALOMON** 
 </span> || [**@sltcvtfk**](https://github.com/sltcvtfk)
