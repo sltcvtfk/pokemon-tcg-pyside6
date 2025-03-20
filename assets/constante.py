@@ -23,7 +23,7 @@ TYPE_DICT = {
     "Ghost": "Psychic",
 }
 
-FRENCH_TYPE_TO_ENGLISH_DICT = {
+FRENCH_TYPE_TO_ENGLISH_DICT = { 
     "eau" : "water",
     "feu" : "fire",
     "plante" : "grass",
@@ -42,7 +42,7 @@ FRENCH_TYPE_TO_ENGLISH_DICT = {
     "fée" : "fairy",
     "vol" : "flying",
     "électrik" : "electric"
- }
+}
 
 STAGE1_CARD_DICT = {
     "Fighting": "img/card/stage1/Fighting.png",

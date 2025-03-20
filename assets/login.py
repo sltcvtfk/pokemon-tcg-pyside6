@@ -57,14 +57,12 @@ class Connexion(QWidget) :
         
     
     def verifLogin(self) :
-
         username = self.userLine.text()
         password = self.passwordLine.text()
-
-        sha512 = hashlib.sha512() #Hachage du mot de passe pour le vérifier
+        
+        sha512 = hashlib.sha512()
         sha512.update(bytes(password, 'utf-8'))
         password = sha512.hexdigest()
-
         answer = False
         
         if username in contenu["users"] :
@@ -83,10 +81,12 @@ class Logout(QWidget) :
     
         self.formLayout = QFormLayout()
         self.setLayout(self.formLayout)
-    
+
+        self.label = QLabel(self.contenu['lastConnected'])
         self.disconnectButton = QPushButton('Disconnect')
         self.disconnectButton.clicked.connect(self.disconnect)
         
+        self.formLayout.addRow(self.label)
         self.formLayout.addRow(self.disconnectButton)
         self.formLayout
         self.disconnectButton.clicked.connect(restart)

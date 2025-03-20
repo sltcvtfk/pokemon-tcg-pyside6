@@ -27,7 +27,7 @@ class Toolbar(QToolBar):
         }
         
         if data['lastConnected'] != '':
-            for name, action in self.qactions:
+            for name, action in self.qactions.items():
                 self.addSeparator()
                 self.addAction(action)
                 action.setStatusTip(name)
