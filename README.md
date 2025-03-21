@@ -41,7 +41,8 @@ python main.py
 
 ## Architecture du Projet
 
-![alt text](image-3.png)
+![image-3](https://github.com/user-attachments/assets/0e33d7ca-b8a7-452a-8273-fc898bfbd66c)
+
 
 ```
 📂 pokemon-tcg       
@@ -73,7 +74,7 @@ python main.py
    - [Problème 2 (Pull Request Open)](https://github.com/Purukitto/pokemon-data.json/pull/28/files)
 
 ## Auteurs et avancée du projet
-![alt text](image-2.png)
+![image-2](https://github.com/user-attachments/assets/7b1f41c4-66fb-4f8d-a9ff-04849fbac0b5)
 
 -<span style="color:red">
 **STAN SALOMON** 
