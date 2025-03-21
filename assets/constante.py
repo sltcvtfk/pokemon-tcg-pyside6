@@ -122,6 +122,27 @@ WEAKNESS_TYPE_DICT = {
     "Normal": "Fighting"
 }
 
+ENGLISH_TYPE_TO_FRENCH_DICT = {
+    "Water": "Eau",
+    "Fire": "Feu",
+    "Grass": "Plante",
+    "Fighting": "Combat",
+    "Normal": "Normal",
+    "Ice": "Glace",
+    "Bug": "Insecte",
+    "Poison": "Poison",
+    "Dragon": "Dragon",
+    "Steel": "Acier",
+    "Psychic": "Psy",
+    "Ground": "Sol",
+    "Dark": "Ténèbres",
+    "Rock": "Roche",
+    "Ghost": "Spectre",
+    "Fairy": "Fée",
+    "Flying": "Vol",
+    "Electric": "Électrik"
+}
+
 WEAKNESS_IMAGE_DICT = {
     "Grass": "img/type/Fire.png",
     "Fire": "img/type/Water.png",

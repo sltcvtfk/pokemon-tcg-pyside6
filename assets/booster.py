@@ -53,7 +53,7 @@ class Booster():
             Returns:
                 QImage: Image of the previous evolution
         """
-        self.prev = pokemon.prev_evolution()
+        self.prev = int(pokemon.pre_evolution())
         if self.prev != None:
             x = requests.get(res[self.prev-1]["image"]["sprite"], stream=True)
             image = QImage()
@@ -95,13 +95,13 @@ class Booster():
             json.dump(data, file, indent=2, ensure_ascii=False)
             file.truncate()
         
-        if my_pokemon.has_prev_evolution():
-            if my_pokemon.prev_evo_has_prev_evo():
+        if my_pokemon.pre_evolution() != None:
+            if my_pokemon.pre_pre_evo() != None:
                 carte = self.load_carte_image(pokedex_id, 2)
             else:
                 carte = self.load_carte_image(pokedex_id, 1)
             self.prev_evo_image = self.load_prev_evolution_image(my_pokemon)
-            self.prev_evo = res[my_pokemon.prev_evolution()-1]["name"]["french"]
+            self.prev_evo = res[int(my_pokemon.pre_evolution())-1]["name"]["french"]
         else:
             carte = self.load_carte_image(pokedex_id, 0)
             self.prev_evo = None

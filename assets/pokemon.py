@@ -11,7 +11,7 @@ class Pokemon():
         Args:
             pokedex_id (int): Pokedex ID of the pokemon
         """
-        self.pokedex_id = pokedex_id
+        self.pokedex_id = int(pokedex_id)
         
     def height(self):
         """
@@ -93,37 +93,35 @@ class Pokemon():
         """
         if len(res[self.pokedex_id-1]["evolution"]) != 0:
             if "next" in res[self.pokedex_id-1]["evolution"]:
-                return int(res[self.pokedex_id-1]["evolution"]["next"][0])
+                return res[self.pokedex_id-1]["evolution"]["next"][0][0]
             else:
                 return None
         else:
             return None
-    def has_prev_evolution(self):
-        """ 
-            Returns: 
-                bool: True if the pokemon has a previous evolution
-        """
-        if len(res[self.pokedex_id-1]["evolution"]) != 0:
-            if "prev" in res[self.pokedex_id-1]["evolution"]:
-                return True
-        return False
     
-    def prev_evolution(self):
+    def pre_evolution(self):
         """
             Returns:
                 int: Pokedex ID of the previous evolution
         """
-        return int(res[self.pokedex_id-1]["evolution"]["prev"][0])
+        if len(res[self.pokedex_id-1]["evolution"]) != 0:
+            if "prev" in res[self.pokedex_id-1]["evolution"]:
+                return res[self.pokedex_id-1]["evolution"]["prev"][0]
+            else:
+                return None
+        else:
+            return None
         
-    def prev_evo_has_prev_evo(self):
+    def pre_pre_evo(self):
         """ 
             Returns: 
                 bool: True if the previous evolution has a previous evolution
         """
-        prev = self.prev_evolution()
-        if "prev" in res[prev-1]["evolution"]:
-            return True
-        return False
+        prev = int(self.pre_evolution())-1
+        if "prev" in res[prev]["evolution"]:
+            return res[prev]["evolution"]["prev"][0]
+        else:
+            return None
     
     def image_links(self):
         """

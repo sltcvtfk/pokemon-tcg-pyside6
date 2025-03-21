@@ -14,6 +14,7 @@ def restart():
     print(status)
     
 class Connexion(QWidget) :
+    """ Va permettre de se connecter"""
     
     def __init__(self, parent=None) :
         super().__init__(parent)
@@ -71,6 +72,7 @@ class Connexion(QWidget) :
         return answer
 
 class Logout(QWidget) :
+    """ Va permettre de se déconnecter"""
     
     
     def __init__(self, parent=None) :
@@ -79,12 +81,15 @@ class Logout(QWidget) :
         with open(BDD) as f:
             self.contenu = json.load(f)
     
+    
         self.formLayout = QFormLayout()
         self.setLayout(self.formLayout)
     
+        self.label = QLabel(self.contenu['lastConnected'])
         self.disconnectButton = QPushButton('Disconnect')
         self.disconnectButton.clicked.connect(self.disconnect)
         
+        self.formLayout.addRow(self.label)
         self.formLayout.addRow(self.disconnectButton)
         self.formLayout
         self.disconnectButton.clicked.connect(restart)

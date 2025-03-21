@@ -16,10 +16,20 @@ with open(BDD, "r",encoding="utf8") as f:
 with open(POKEDEX, encoding="utf8") as f:
     res = json.load(f)
 
-class Bouton(QPushButton):
+class addPokemon(QPushButton):
+    right_click = Signal()
+    left_click = Signal()
+
     def __init__(self, parent=None):
+
         super().__init__()
 
+    def mousePressEvent(self, e):
+        print(e.button())
+        if e.button() == Qt.LeftButton:
+            self.left_click.emit()
+        else:
+            self.right_click.emit()
 
 class Scene_Booster(QGraphicsScene):
     def __init__(self, *args): 
@@ -326,9 +336,11 @@ class MyWindow(QMainWindow):
                 break
             else:
                 self.next_button.setEnabled(self.current_page < self.last_page)
-            button = QPushButton()
+            button = addPokemon()
             button.setFixedSize(65, 65)
-            button.setStyleSheet("background: transparent; border: none;")  # Make button transparent except for the image
+            button.setStyleSheet("background: transparent; border: none;") 
+            button.left_click.connect(lambda poke=index: self.show_info_pokemon(poke))
+            button.right_click.connect(lambda poke=index: self.show_pokemon(poke))
             button.clicked.connect(lambda _, poke_id=index: self.show_pokemon(poke_id))
             self.pokemon_layout.addWidget(button, i // 4, i % 4)
             if self.searchBar.filtered == []:
@@ -361,11 +373,27 @@ class MyWindow(QMainWindow):
             futures = [executor.submit(load_single_image, button, index) for button, index in buttons]
             concurrent.futures.wait(futures)
             
-    def show_pokemon(self, index):
-        """Affiche le pokémon sélectionné"""
-        # print(f"L'ID du Pokémon est : {res[index]['id']}")
+    def show_info_pokemon(self, index):
+        """Affiche les info du pokémon sélectionné"""
+        self.update_pokedex_data()
         self.pokemon = Pokeinfo(res[index]["id"])
         self.pokemon.show()
+        
+    def show_pokemon(self, index):
+        """Fonction administrateur, elle va permettre de rajouter ou d'enlever un pokémon du pokedex"""
+        print("slt")
+        with open("json/bdd.json", "w", encoding="utf8") as file:
+            
+            user = data['users'][data['lastConnected']]
+        
+            if int(res[index]["id"]) not in user['pokedex']:
+                user['pokedex'].append(int(res[index]["id"]))
+            elif int(res[index]["id"]) in user['pokedex']:
+                user['pokedex'].remove(int(res[index]["id"]))
+        
+            json.dump(data, file, indent=2, ensure_ascii=False)
+        self.update_pokedex_data()
+
 
     
     def prev_page(self):
@@ -382,6 +410,8 @@ class MyWindow(QMainWindow):
             
 if __name__ == "__main__":
     app = QApplication([])
+
+
     win = MyWindow()
     win.show()
     
