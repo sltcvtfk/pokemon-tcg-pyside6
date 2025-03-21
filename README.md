@@ -41,8 +41,7 @@ python main.py
 
 ## Architecture du Projet
 
-![image-3](https://github.com/user-attachments/assets/0e33d7ca-b8a7-452a-8273-fc898bfbd66c)
-
+![image](https://github.com/user-attachments/assets/9a849f30-9be5-4d4e-b2b4-4ac4045b001b)
 
 ```
 📂 pokemon-tcg       
