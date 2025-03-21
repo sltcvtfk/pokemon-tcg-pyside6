@@ -426,9 +426,3 @@ QFontDatabase.addApplicationFont("./font/GillSansStdBold.otf") # Ajoute la polic
 
 
 
-        # self.scene.addPixmap(charge_carte_image(pokemon_id))
-        # self.scene.addPixmap(charge_pokemon_image(pokemon_id))
-        # booster = self.scene.addPixmap(affiche_booster())
-        # self.scene.removeItem(booster)
-        # self.scene.items()[0].setPos(130,100)
-        #self.pokemon_id = random.randint(1, 151)
