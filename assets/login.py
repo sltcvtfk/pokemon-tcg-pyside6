@@ -30,10 +30,10 @@ class Connexion(QWidget) :
         self.formLayout = QFormLayout()
         self.setLayout(self.formLayout)
         
-        username_label = QLabel("Username : ")
+        username_label = QLabel("Nom d'utilisateur : ")
         self.userLine = QLineEdit(self)
         
-        password_label = QLabel("Password : ")
+        password_label = QLabel("Mot de passe : ")
         self.passwordLine = QLineEdit(self)
         self.passwordLine.setEchoMode(QLineEdit.Password)
         
@@ -96,7 +96,7 @@ class Logged(QWidget) :
         self.nbPokemonLabel = QLabel(f"Nombre de pokémon : {self.user.nb_pokemon}")
         self.nbPokemonLabel.repaint()
         self.userTypeLabel = QLabel(f"Type d'utilisateur : {"Administrateur" if self.user.userType else "Membre"}")
-        self.disconnectButton = QPushButton('Disconnect')
+        self.disconnectButton = QPushButton('Déconnexion')
         self.disconnectButton.clicked.connect(self.disconnect)
         
         self.formLayout.addWidget(self.userLabel)
