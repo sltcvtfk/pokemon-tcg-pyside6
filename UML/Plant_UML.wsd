@@ -1,115 +1,191 @@
-@startuml Pokemon
+@startuml Pokemon TCG
 
-class Pokemon {
-    Nom : str
-    Type : str
-    Génération : int
-    Etat : bool
-    pokedex_id : int 
+title Pokemon TCG
 
-    get_name()
-    get_type()
-    get_gen()
-    get_id() 
-}
-
-class add_pokemon{
-}
-
-class Pokedex {
-    number_of_pokemons : int
-
-    search_by_name()
-    search_by_type()
-    search_by_gen()
-    search_by_id()
-}
-
-class Poke_info{
-    update_data()
-}
-class Interface_UI {
-    afficher_menu()
-    afficher_pokedex()
-    afficher_booster()
-}
+QMainWindow  <|--  MyWindow
 
 class MyWindow {
-    avoid : int
-    init_toolbar()
-    init_booster_scene()
-    init_pokedex_scene()
-    booster_scene()
-    pokedex_scene()
-    show_info_pokemon()
-    show_pokemon()
+    - my_scenes: QStackedWidget
+    - searchBar: Searchbar
+    - scene_booster: Scene_Booster
+    - scene_pokedex: Scene_Pokedex
+    - scene_connexion: Scene_Connexion
+    - scene_logout: Scene_logout
+    - toolbar: Toolbar
+    - open_button: Button_Open
+    - booster: Booster
+    - boosterPixmap: QGraphicsPixmapItem
+    - carte: QGraphicsPixmapItem
+    - current_page: int
+    - pokemon_per_page: int
+    - total_pokemon: int
+    - num_pages: int
+    + __init__()
+    + init_pokedex_scene()
+    + init_connexion_scene()
+    + init_logout_scene()
+    + init_toolbar()
+    + init_booster_scene()
+    + pokedex_scene()
+    + booster_scene()
+    + connexion_scene()
+    + booster_start()
+    + update_pokedex_data()
+    + pages()
+    + update_page()
+    + load_pokemon_images(buttons: list)
+    + show_info_pokemon(index: int)
+    + show_pokemon(index: int)
+    + prev_page()
+    + next_page()
 }
 
-class Boutons {
-}
-
-class Button_Open {
-    compte : int
-    click()
-}
-
-class SearchBar {
-    filter_search()
-}
-
-class Scene {
+class addPokemon {
+    + right_click: Signal
+    + left_click: Signal
+    + __init__()
+    + mousePressEvent(e: QMouseEvent)
 }
 
 class Scene_Booster {
+    - rect: QGraphicsRectItem
+    + __init__()
 }
 
 class Scene_Pokedex {
+    - rect: QGraphicsRectItem
+    + __init__()
 }
 
 class Scene_Connexion {
-    }
+    - rect: QGraphicsRectItem
+    + __init__()
+}
 
 class Scene_logout {
+    - rect: QGraphicsRectItem
+    + __init__()
 }
 
+class Button_Open {
+    - compte: int
+    + __init__()
+    + _click(): int
+}
 
 class Booster {
-    cartes : List[Pokemon]
-    
-    ouvrir_booster()
-    affiche_booster()
-    creation_carte_pokemon()
-
+    - pokemons: list
+    + __init__()
+    + add_to_list(pokedex_id: int)
+    + load_carte_image(pokedex_id: int, how_many_prev: int): QImage
+    + load_pokemon_image(pokedex_id: int): QImage
+    + load_prev_evolution_image(pokemon: Pokemon): QImage
+    + load_pokemon_weakness_retreat_image(pokedex_id: int): tuple
+    + creation_carte_pokemon(pokedex_id: int): QPixmap
+    + affiche_booster(): QPixmap
 }
 
-class Utilisateur {
-    nom: str
+class Connexion {
+    - formLayout: QFormLayout
+    - userLine: QLineEdit
+    - passwordLine: QLineEdit
+    - loginButton: QPushButton
+    + __init__()
+    + login()
+    + verifLogin(): bool
 }
 
-class QStackedWidget {
-    addWidget()
-    setCurrentIndex()
+class Logout {
+    - formLayout: QFormLayout
+    - label: QLabel
+    - disconnectButton: QPushButton
+    + __init__()
+    + disconnect()
 }
 
-Pokedex "    1    " o-- "         *  " Pokemon
-Pokemon "7  " ---* "1" Booster
-Pokemon -- add_pokemon
-MyWindow --> Interface_UI  
-QMainWindow <|-- MyWindow
-MyWindow --> Scene
-MyWindow --> QStackedWidget
-MyWindow --> Scene_Booster
-MyWindow --> Scene_Pokedex
-MyWindow --> Scene_Connexion
-MyWindow --> Scene_logout
-SearchBar -- Boutons
-Utilisateur --> Pokedex
-Utilisateur -- Interface_UI
-Booster --> Scene_Booster
-Button_Open --> Scene_Booster
-Button_Open --> Booster
-QStackedWidget --> Scene_Booster
-QStackedWidget --> Scene_Pokedex
+class Pokeinfo {
+    - pokemon: Pokemon
+    - french_name: str
+    - type: str
+    - hgt: str
+    - wgt: str
+    - hp: str
+    - gen: str
+    - weakness: str
+    - closeButton: QPushButton
+    - final_layout: QGridLayout
+    - info_layout: QVBoxLayout
+    - image: QLabel
+    + __init__(pokedex_id: int)
+    + update_data()
+}
 
+class Pokemon {
+    - pokedex_id: int
+    + __init__(pokedex_id: int)
+    + height(): int
+    + weight(): int
+    + species(): str
+    + english_name(): str
+    + french_name(): str
+    + hp(): int
+    + description(): str
+    + his_type(): str
+    + weakness(): str
+    + generation(): int
+    + evolution(): int
+    + pre_evolution(): int
+    + pre_pre_evo(): int
+    + image_links(): dict
+    + __repr__(): str
+}
+
+class Searchbar {
+    - layout: QVBoxLayout
+    - lineEdit: QLineEdit
+    - nameLabel: QLabel
+    - filtered: list
+    + __init__()
+    + initUI()
+    + filterSearch()
+}
+
+class Toolbar {
+    - qactions: dict
+    + __init__()
+}
+
+MyWindow  *--  Searchbar
+MyWindow  *--  Scene_Booster
+MyWindow  *--  Scene_Pokedex
+MyWindow  *--  Scene_Connexion
+MyWindow  *--  Scene_logout
+MyWindow  *--  Toolbar
+MyWindow  *--  Button_Open
+MyWindow  *--  Booster
+MyWindow  *--  Connexion
+MyWindow  *--  Logout
+MyWindow  *--  addPokemon
+
+Scene_Booster  --|>  QGraphicsScene
+Scene_Pokedex  --|>  QGraphicsScene
+Scene_Connexion  --|>  QGraphicsScene
+Scene_logout  --|>  QGraphicsScene
+
+Button_Open  --|>  QPushButton
+addPokemon  --|>  QPushButton
+
+Toolbar  --|>  QToolBar
+
+Searchbar  --|>  QWidget
+Pokeinfo  --|>  QWidget
+Connexion  --|>  QWidget
+Logout  --|>  QWidget
+
+Booster  *--  Pokemon
+
+Pokeinfo  *--  Pokemon
+
+Toolbar  *--  MyWindow
 
 @enduml
