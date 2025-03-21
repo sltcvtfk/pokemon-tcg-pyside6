@@ -79,7 +79,7 @@ python main.py
 **STAN SALOMON** 
 </span> || [**@sltcvtfk**](https://github.com/sltcvtfk)
 
-**Tâches** :  
+**Tâches** :  Je me suis occupé surtout de la partie graphique, avec la MainWindow, la scène Booster, avec l'affichage des cartes, avec le nom du pokémon, son type, ses "HP", sa taille, son poids, sa faiblesse, et sa sous évolution, s'il en avait une. et "Pokédex". J'ai aussi fait la Toolbar. J'ai aussi fait la partie back-end, avec l'ajout des pokémons dans le pokédex de l'utilisateur à chaque ouverte de booster.
 
 -<span style="color:orange">
 **EVAN CHAMAND**
@@ -93,7 +93,7 @@ python main.py
 **ROMAIN ARDOISE** 
 </span> || [**@ShizuutA**](https://github.com/ShizuutA)
 
-**Tâches** : Je me suis occupé des classes Booster, de la barre de recherche 
+**Tâches** : Je me suis occupé de la barre de recherche 
 
 ## Licence
 
