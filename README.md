@@ -73,7 +73,7 @@ python main.py
    - [Problème 2 (Pull Request Open)](https://github.com/Purukitto/pokemon-data.json/pull/28/files)
 
 ## Auteurs et avancée du projet
-![image-2](https://github.com/user-attachments/assets/7b1f41c4-66fb-4f8d-a9ff-04849fbac0b5)
+![image](https://github.com/user-attachments/assets/22a21f22-6e72-403d-bcb1-084e4c5cc2d3)
 
 -<span style="color:red">
 **STAN SALOMON** 
