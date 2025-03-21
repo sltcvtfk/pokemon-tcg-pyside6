@@ -40,7 +40,7 @@ class Searchbar(QWidget) :
         self.setLayout(self.layout)
         
         self.lineEdit = QLineEdit(self)
-        self.lineEdit.setPlaceholderText("Search")
+        self.lineEdit.setPlaceholderText("Chercher")
         self.lineEdit.setAlignment(Qt.AlignCenter)
         
         

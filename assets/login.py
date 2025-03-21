@@ -13,6 +13,14 @@ def restart():
     status = QProcess.startDetached(sys.executable, sys.argv)
     print(status)
     
+class User():
+    """ Va permettre d'obtenir les informations de l'utilisateur"""
+    
+    def __init__(self, user):
+        self.username = user
+        self.nb_pokemon = len(contenu["users"][self.username]["pokedex"]) if self.username != "" else 0
+        self.userType = contenu["users"][self.username]["isAdmin"] if self.username != "" else False
+    
 class Connexion(QWidget) :
     """ Va permettre de se connecter"""
     
@@ -42,7 +50,6 @@ class Connexion(QWidget) :
         
         username = self.userLine.text()
         
-        
         if self.verifLogin() :
             contenu["lastConnected"] = username
                 
@@ -71,7 +78,7 @@ class Connexion(QWidget) :
                 answer = True
         return answer
 
-class Logout(QWidget) :
+class Logged(QWidget) :
     """ Va permettre de se déconnecter"""
     
     
@@ -80,22 +87,29 @@ class Logout(QWidget) :
     
         with open(BDD) as f:
             self.contenu = json.load(f)
+        self.user = User(contenu["lastConnected"])
     
-    
-        self.formLayout = QFormLayout()
+        self.formLayout = QVBoxLayout()
         self.setLayout(self.formLayout)
     
-        self.label = QLabel(self.contenu['lastConnected'])
+        self.userLabel = QLabel(f"Utilisateur : {self.user.username}")
+        self.nbPokemonLabel = QLabel(f"Nombre de pokémon : {self.user.nb_pokemon}")
+        self.nbPokemonLabel.repaint()
+        self.userTypeLabel = QLabel(f"Type d'utilisateur : {"Administrateur" if self.user.userType else "Membre"}")
         self.disconnectButton = QPushButton('Disconnect')
         self.disconnectButton.clicked.connect(self.disconnect)
         
-        self.formLayout.addRow(self.label)
-        self.formLayout.addRow(self.disconnectButton)
-        self.formLayout
+        self.formLayout.addWidget(self.userLabel)
+        self.formLayout.addWidget(self.nbPokemonLabel) 
+        self.formLayout.addWidget(self.userTypeLabel)
+        self.formLayout.addStretch()
+        self.formLayout.addWidget(self.disconnectButton)
+        
+        self.setLayout(self.formLayout)
+        
         self.disconnectButton.clicked.connect(restart)
         
     def disconnect(self) :
-        
         contenu['lastConnected'] = ""
         
         with open(BDD, "w") as f:

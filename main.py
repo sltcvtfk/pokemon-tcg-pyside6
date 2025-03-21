@@ -25,11 +25,10 @@ class addPokemon(QPushButton):
         super().__init__()
 
     def mousePressEvent(self, e):
-        print(e.button())
-        if e.button() == Qt.LeftButton:
-            self.left_click.emit()
-        else:
+        if e.button() == Qt.RightButton:
             self.right_click.emit()
+        elif e.button() == Qt.LeftButton:
+            self.left_click.emit()
 
 class Scene_Booster(QGraphicsScene):
     def __init__(self, *args): 
@@ -67,7 +66,7 @@ class Scene_Connexion(QGraphicsScene) :
         self.rect.setPen(pen)
         self.addItem(self.rect)
         
-class Scene_logout(QGraphicsScene) :
+class Scene_Logged(QGraphicsScene) :
     def __init__(self, *args): 
         super().__init__(*args)
         self.rect = QGraphicsRectItem(0, 0, 375, 680)
@@ -83,7 +82,7 @@ class Button_Open(QPushButton):
     def __init__(self, parent=None):
         super().__init__()
         self.setGeometry(175, 570, 50, 50)
-        self.setText("Open!")
+        self.setText("Ouvrir!")
         self.setFixedSize(50, 50)
         self.compte = 0   
         
@@ -109,9 +108,8 @@ class MyWindow(QMainWindow):
         # screen_size = app.primaryScreen().availableGeometry()
         # (self.screen_width, self.screen_height) = (screen_size.width(), screen_size.height())
         
-        
-        
         # self.setGeometry(0, 0, round(self.screen_width/4.7), round(self.screen_height/1.35))
+        
         self.setGeometry(0, 0, 410, 800)
         
         self.setWindowIcon(QIcon("img/pokeball_icon.png"))
@@ -126,18 +124,18 @@ class MyWindow(QMainWindow):
         self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
         self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
         self.scene_connexion = Scene_Connexion(0 ,0 ,400, 700)
-        self.scene_logout = Scene_logout(0,0,400,700)
+        self.scene_logged = Scene_Logged(0,0,400,700)
 
         self.my_scenes.addWidget(QGraphicsView(self.scene_booster))
         self.my_scenes.addWidget(QGraphicsView(self.scene_pokedex))
         self.my_scenes.addWidget(QGraphicsView(self.scene_connexion))
-        self.my_scenes.addWidget(QGraphicsView(self.scene_logout))
+        self.my_scenes.addWidget(QGraphicsView(self.scene_logged))
         
         self.init_toolbar()
         self.init_booster_scene()
         self.init_pokedex_scene()
         self.init_connexion_scene()
-        self.init_logout_scene()
+        self.init_logged_scene()
         
         if data['lastConnected'] != "":
             self.booster_scene()
@@ -153,13 +151,10 @@ class MyWindow(QMainWindow):
         widget = QWidget()
         widget.setLayout(self.layout_pokedex)
         self.scene_pokedex.addWidget(widget)
-        
-        self.layout = QHBoxLayout()
-        self.layout.addWidget(QGraphicsView(self.scene_pokedex))
+
         self.scene_pokedex.addWidget(self.searchBar)
         self.searchBar.lineEdit.textChanged.connect(self.update_page)
         
-        widget.setLayout(self.layout)
 
 
 
@@ -173,14 +168,14 @@ class MyWindow(QMainWindow):
         self.connexion.loginButton.clicked.connect(self.init_toolbar)
         self.scene_connexion.addWidget(self.connexion)
         
-    def init_logout_scene(self) :
-        """Initialise la scène de déconnexion
+    def init_logged_scene(self) :
+        """Initialise la scène d'utilisateur connecté
         """
-        self.logout = Logout()
-        self.logout.setFixedSize(400, 700)
-        self.logout.disconnectButton.clicked.connect(self.connexion_scene)
-        self.logout.disconnectButton.clicked.connect(self.init_toolbar)
-        self.scene_logout.addWidget(self.logout)
+        self.logged = Logged()
+        self.logged.setFixedSize(400, 700)
+        self.logged.disconnectButton.clicked.connect(self.connexion_scene)
+        self.logged.disconnectButton.clicked.connect(self.init_toolbar)
+        self.scene_logged.addWidget(self.logged)
         
     def init_toolbar(self):
         """Initialise the toolbar
@@ -224,19 +219,16 @@ class MyWindow(QMainWindow):
     def connexion_scene(self):
         """Change any scene to booster scene
         """
-        with open(BDD) as f:
+        
+        with open(BDD, "r", encoding="utf8") as f:
+            global bdd
             bdd = json.load(f)
         
-        if (self.logout.disconnectButton.clicked) or (bdd['lastConnected'] == "" ): 
-            with open(BDD) as f:
-                bdd = json.load(f)
-                
+        if (self.logged.disconnectButton.clicked) or (bdd['lastConnected'] == "" ):   
             self.my_scenes.setCurrentIndex(2)
         if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['lastConnected'] != ""):
-            with open(BDD) as f:
-                bdd = json.load(f)
-                
             self.my_scenes.setCurrentIndex(3)
+           
 
     @Slot()
     def booster_start(self):
@@ -295,10 +287,10 @@ class MyWindow(QMainWindow):
         
         self.button_layout = QHBoxLayout()
         self.button_layout.setContentsMargins(32, 0, 32, 120)
-        self.prev_button = QPushButton("Previous")
+        self.prev_button = QPushButton("Précédent")
         
         self.prev_button.clicked.connect(self.prev_page)
-        self.next_button = QPushButton("Next")
+        self.next_button = QPushButton("Suivant")
         self.next_button.clicked.connect(self.next_page)
         
         self.button_layout.addWidget(self.prev_button)
@@ -381,7 +373,6 @@ class MyWindow(QMainWindow):
         
     def show_pokemon(self, index):
         """Fonction administrateur, elle va permettre de rajouter ou d'enlever un pokémon du pokedex"""
-        print("slt")
         with open("json/bdd.json", "w", encoding="utf8") as file:
             
             user = data['users'][data['lastConnected']]
