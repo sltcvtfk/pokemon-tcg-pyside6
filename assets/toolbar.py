@@ -14,28 +14,14 @@ class Toolbar(QToolBar):
         self.setFixedHeight(75)
         self.setIconSize(QSize(50, 50))
         self.setContextMenuPolicy(Qt.PreventContextMenu)
-        left_spacer = QWidget()
-        left_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        right_spacer = QWidget()
-        right_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.addWidget(right_spacer)
+        self.left_spacer = QWidget()
+        self.left_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.right_spacer = QWidget()
+        self.right_spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         
-        self.qactions = {
-            "Pokedex": QAction(QIcon('img/pokedex_icon.png'), 'Pokedex', self),
-            "Booster": QAction(QIcon('img/pokeball_icon.png'), 'Booster', self),
-            "User": QAction(QIcon('img/poketrainer_icon.png'), 'User', self)
-        }
         
-        if data['lastConnected'] != '':
-            for name, action in self.qactions.items():
-                self.addSeparator()
-                self.addAction(action)
-                action.setStatusTip(name)
-            self.addSeparator()
-            self.addWidget(left_spacer)
-
-        else:
-            self.addSeparator()
-            self.addAction(self.qactions["User"])
-            self.addSeparator()
-            self.addWidget(left_spacer)
+        self.qactions = [
+            QAction(QIcon('img/pokedex_icon.png'), "Pokedex", self),
+            QAction(QIcon('img/pokeball_icon.png'), "Booster", self),
+            QAction(QIcon('img/poketrainer_icon.png'), "Utilisateur", self)
+        ]

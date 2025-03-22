@@ -164,8 +164,8 @@ class MyWindow(QMainWindow):
         
         self.connexion = Connexion()
         self.connexion.setFixedSize(400, 700)
+        self.connexion.loginButton.clicked.connect(self.update_toolbar)
         self.connexion.loginButton.clicked.connect(self.connexion_scene)
-        self.connexion.loginButton.clicked.connect(self.init_toolbar)
         self.scene_connexion.addWidget(self.connexion)
         
     def init_logged_scene(self) :
@@ -173,24 +173,64 @@ class MyWindow(QMainWindow):
         """
         self.logged = Logged()
         self.logged.setFixedSize(400, 700)
+        
+        self.logged.disconnectButton.clicked.connect(self.update_toolbar)
         self.logged.disconnectButton.clicked.connect(self.connexion_scene)
-        self.logged.disconnectButton.clicked.connect(self.init_toolbar)
         self.scene_logged.addWidget(self.logged)
         
     def init_toolbar(self):
-        """Initialise the toolbar
+        """Initialise la Toolbar
         """
-        
         self.toolbar = Toolbar()
-        self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
-    
-        self.toolbar.qactions["Pokedex"].triggered.connect(self.pokedex_scene)
-        self.toolbar.qactions["Booster"].triggered.connect(self.booster_scene)
-        self.toolbar.qactions["User"].triggered.connect(self.connexion_scene)
+        self.update_bdd()
+        self.toolbar.addWidget(self.toolbar.right_spacer)
+        for action in self.toolbar.qactions:
+            self.toolbar.addAction(action)
+        
+        
+        self.toolbar.qactions[0].triggered.connect(self.pokedex_scene)
+        self.toolbar.qactions[1].triggered.connect(self.booster_scene)
+        self.toolbar.qactions[2].triggered.connect(self.connexion_scene)
 
         
+        if data['lastConnected'] == "":
+            actions_to_remove = []
+            
+            actions_to_remove.append(self.toolbar.actions()[1])
+            actions_to_remove.append(self.toolbar.actions()[2])
+        
+            for action in actions_to_remove:
+                self.toolbar.removeAction(action)
+        
+   
+            
+        print("\n\n\nslt\n\n\n")
+        print(self.toolbar.actions())
+        print("\n\n\nslt\n\n\n")
+        
+        
+        
+        self.toolbar.addWidget(self.toolbar.left_spacer)
+        self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
+        
+
+
+            
+    
+    def update_toolbar(self):
+        """Met à jour la Toolbar
+        """
+        self.toolbar.clear()
+        self.init_toolbar()
+        
+    def update_bdd(self):
+        """Met à jour la base de données
+        """
+        with open(BDD, "r", encoding="utf8") as file:
+            json.load(file)
+    
     def init_booster_scene(self):
-        """Initialise the booster scene
+        """Initialise la scène de booster
         """
         self.open_button = Button_Open()
         self.open_button.setFixedSize(50, 50)
@@ -206,34 +246,34 @@ class MyWindow(QMainWindow):
         
         
     def pokedex_scene(self):
-        """Change any scene to pokedex scene
+        """Change n'importe quelle scène en scène de pokedex
         """
         self.update_pokedex_data()
         self.my_scenes.setCurrentIndex(1)
     
     def booster_scene(self):
-        """Change any scene to booster scene
+        """Change n'importe quelle scène en scène de booster
         """
         self.my_scenes.setCurrentIndex(0)
  
     def connexion_scene(self):
-        """Change any scene to booster scene
+        """Change n'importe quelle scène en scène de connexion
         """
         
         with open(BDD, "r", encoding="utf8") as f:
             global bdd
             bdd = json.load(f)
         
-        if (self.logged.disconnectButton.clicked) or (bdd['lastConnected'] == "" ):   
+        if (self.logged.disconnectButton.clicked) or (bdd['lastConnected'] == "" ):  
             self.my_scenes.setCurrentIndex(2)
-        if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['lastConnected'] != ""):
+        if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['lastConnected'] != ""): 
             self.my_scenes.setCurrentIndex(3)
            
 
     @Slot()
     def booster_start(self):
         
-        """Start the booster. 
+        """Lance le booster. 
         Si le compte est égal à 1, on enlève le booster, on affiche une carte
         Si le compte est égal à 6, on enlève la carte, on affiche un booster
         Sinon, on enlève la carte, on affiche une autre carte
@@ -262,9 +302,7 @@ class MyWindow(QMainWindow):
 
     def update_pokedex_data(self):
         """Update the pokedex data"""
-        with open(BDD, "r", encoding="utf8") as f:
-            global data
-            data = json.load(f)
+        self.update_bdd()
         self.update_page()
             
     @Slot()

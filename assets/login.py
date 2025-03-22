@@ -44,7 +44,6 @@ class Connexion(QWidget) :
         self.formLayout.addRow(password_label, self.passwordLine)
         self.formLayout.addRow(self.loginButton)
         self.formLayout
-        self.loginButton.clicked.connect(restart)
         
     def login(self): 
         
@@ -107,7 +106,6 @@ class Logged(QWidget) :
         
         self.setLayout(self.formLayout)
         
-        self.disconnectButton.clicked.connect(restart)
         
     def disconnect(self) :
         contenu['lastConnected'] = ""
