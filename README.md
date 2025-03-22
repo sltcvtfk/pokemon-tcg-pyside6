@@ -9,6 +9,7 @@ Ce projet est une application graphique basée sur PySide6 permettant de simuler
 - **Affichage du Pokédex** : Recherche de Pokémon par nom, type, génération ou ID.
 - **Ouverture de boosters** : Simulation de l'ouverture d'un booster contenant plusieurs cartes Pokémon.
 - **Interface utilisateur** : Navigation fluide entre les différentes scènes via une barre d'outils.
+- **Option administrateur** : Si l'utilisateur est administrateur, un clic droit sur un Pokémon du Pokédex lui permet de l'ajouter à son propre Pokédex.
 
 ## Installation
 
@@ -18,26 +19,39 @@ Ce projet est une application graphique basée sur PySide6 permettant de simuler
 - PySide6
 - Requests
 - JSON (intégré à Python)
-
 ### Étapes d'installation
 
 1. Clonez ce dépôt :
    ```sh
-   git clone https://github.com/sltcvtfk/pokemon-tcg-pyside6git
+   git clone https://github.com/sltcvtfk/pokemon-tcg-pyside6
    cd pokemon-tcg-pyside6
    ```
-2. Installez les dépendances :
+2. Créez et activez un environnement virtuel (venv) :
+
+   - Sur Windows :
+     ```sh
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+   - Sur macOS et Linux :
+     ```sh
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+
+3. Installez les dépendances dans l'environnement virtuel :
    ```sh
    pip install -r requirements.txt
    ```
 
 ## Utilisation
 
-Lancez l'application avec la commande :
+Assurez-vous que l'environnement virtuel est activé, puis lancez l'application avec la commande :
 
 ```sh
 python main.py
 ```
+
 
 ## Architecture du Projet
 
