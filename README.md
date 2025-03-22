@@ -93,7 +93,7 @@ python main.py
 **ROMAIN ARDOISE** 
 </span> || [**@ShizuutA**](https://github.com/ShizuutA)
 
-**Tâches** : Je me suis occupé de la barre de recherche 
+**Tâches** : Je me suis occupé de la barre de recherche, de la connexion et du mode admin, de la modification de pokemon présent dans le pokedex en mode admin
 
 ## Licence
 
