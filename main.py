@@ -142,6 +142,8 @@ class MyWindow(QMainWindow):
         else:
             self.connexion_scene()
         
+        
+        
     def init_pokedex_scene(self):
         """Initialise the pokedex scene
         """
@@ -156,7 +158,11 @@ class MyWindow(QMainWindow):
         self.searchBar.lineEdit.textChanged.connect(self.update_page)
         
 
-
+    def update_bdd(self):
+        """Met à jour la base de données
+        """
+        with open(BDD, encoding="utf8") as file:
+            json.load(file)
 
     def init_connexion_scene(self) :
         """Initialise la scène de connexion
@@ -164,7 +170,6 @@ class MyWindow(QMainWindow):
         
         self.connexion = Connexion()
         self.connexion.setFixedSize(400, 700)
-        self.connexion.loginButton.clicked.connect(self.update_toolbar)
         self.connexion.loginButton.clicked.connect(self.connexion_scene)
         self.scene_connexion.addWidget(self.connexion)
         
@@ -173,16 +178,21 @@ class MyWindow(QMainWindow):
         """
         self.logged = Logged()
         self.logged.setFixedSize(400, 700)
-        
-        self.logged.disconnectButton.clicked.connect(self.update_toolbar)
+    
         self.logged.disconnectButton.clicked.connect(self.connexion_scene)
+
         self.scene_logged.addWidget(self.logged)
         
     def init_toolbar(self):
         """Initialise la Toolbar
         """
+        
+        with open(BDD, "r", encoding="utf8") as f:
+            global bdd
+            bdd = json.load(f)
+            
         self.toolbar = Toolbar()
-        self.update_bdd()
+
         self.toolbar.addWidget(self.toolbar.right_spacer)
         for action in self.toolbar.qactions:
             self.toolbar.addAction(action)
@@ -192,42 +202,25 @@ class MyWindow(QMainWindow):
         self.toolbar.qactions[1].triggered.connect(self.booster_scene)
         self.toolbar.qactions[2].triggered.connect(self.connexion_scene)
 
-        
-        if data['lastConnected'] == "":
-            actions_to_remove = []
-            
-            actions_to_remove.append(self.toolbar.actions()[1])
-            actions_to_remove.append(self.toolbar.actions()[2])
-        
-            for action in actions_to_remove:
-                self.toolbar.removeAction(action)
-        
-   
-            
-        print("\n\n\nslt\n\n\n")
-        print(self.toolbar.actions())
-        print("\n\n\nslt\n\n\n")
-        
+        # print(bdd['lastConnected'])
+        if bdd['lastConnected'] == "":
+            self.toolbar.removeAction(self.toolbar.actions()[1])
+            self.toolbar.removeAction(self.toolbar.actions()[1])
         
         
         self.toolbar.addWidget(self.toolbar.left_spacer)
         self.addToolBar(Qt.BottomToolBarArea, self.toolbar)
         
-
-
-            
     
     def update_toolbar(self):
         """Met à jour la Toolbar
         """
-        self.toolbar.clear()
+        self.removeToolBar(self.toolbar)
+        self.update_bdd()
         self.init_toolbar()
         
-    def update_bdd(self):
-        """Met à jour la base de données
-        """
-        with open(BDD, "r", encoding="utf8") as file:
-            json.load(file)
+        
+
     
     def init_booster_scene(self):
         """Initialise la scène de booster
@@ -265,10 +258,29 @@ class MyWindow(QMainWindow):
             bdd = json.load(f)
         
         if (self.logged.disconnectButton.clicked) or (bdd['lastConnected'] == "" ):  
+            self.update_toolbar()
+            self.repaint()
             self.my_scenes.setCurrentIndex(2)
         if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['lastConnected'] != ""): 
+            self.update_toolbar()
             self.my_scenes.setCurrentIndex(3)
            
+    def update_every_scene(self):
+        """Met à jour toutes les scènes
+        """
+        self.update_pokedex_data()
+        self.update_toolbar()
+        for i in range(self.my_scenes.count()):
+            widget = self.my_scenes.widget(i)
+            if isinstance(widget, QGraphicsView):
+                scene = widget.scene()
+                for item in scene.items():
+                    scene.removeItem(item)
+            
+        self.init_booster_scene()
+        self.init_pokedex_scene()
+        self.init_connexion_scene()
+        self.init_logged_scene()
 
     @Slot()
     def booster_start(self):
@@ -411,17 +423,18 @@ class MyWindow(QMainWindow):
         
     def show_pokemon(self, index):
         """Fonction administrateur, elle va permettre de rajouter ou d'enlever un pokémon du pokedex"""
-        with open("json/bdd.json", "w", encoding="utf8") as file:
+        if data["users"][data["lastConnected"]]["isAdmin"] == True:
+            with open("json/bdd.json", "w", encoding="utf8") as file:
+                
+                user = data['users'][data['lastConnected']]
             
-            user = data['users'][data['lastConnected']]
-        
-            if int(res[index]["id"]) not in user['pokedex']:
-                user['pokedex'].append(int(res[index]["id"]))
-            elif int(res[index]["id"]) in user['pokedex']:
-                user['pokedex'].remove(int(res[index]["id"]))
-        
-            json.dump(data, file, indent=2, ensure_ascii=False)
-        self.update_pokedex_data()
+                if (int(res[index]["id"]) not in user['pokedex']):
+                    user['pokedex'].append(int(res[index]["id"]))
+                elif int(res[index]["id"]) in user['pokedex']:
+                    user['pokedex'].remove(int(res[index]["id"]))
+            
+                json.dump(data, file, indent=2, ensure_ascii=False)
+            self.update_pokedex_data()
 
 
     
