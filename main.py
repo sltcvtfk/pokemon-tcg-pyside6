@@ -264,23 +264,23 @@ class MyWindow(QMainWindow):
         if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['lastConnected'] != ""): 
             self.update_toolbar()
             self.my_scenes.setCurrentIndex(3)
-           
-    def update_every_scene(self):
-        """Met à jour toutes les scènes
-        """
-        self.update_pokedex_data()
-        self.update_toolbar()
-        for i in range(self.my_scenes.count()):
-            widget = self.my_scenes.widget(i)
-            if isinstance(widget, QGraphicsView):
-                scene = widget.scene()
-                for item in scene.items():
-                    scene.removeItem(item)
+  
+    # def update_every_scene(self):
+    #     """Met à jour toutes les scènes
+    #     """
+    #     self.update_pokedex_data()
+    #     self.update_toolbar()
+    #     for i in range(self.my_scenes.count()):
+    #         widget = self.my_scenes.widget(i)
+    #         if isinstance(widget, QGraphicsView):
+    #             scene = widget.scene()
+    #             for item in scene.items():
+    #                 scene.removeItem(item)
             
-        self.init_booster_scene()
-        self.init_pokedex_scene()
-        self.init_connexion_scene()
-        self.init_logged_scene()
+    #     self.init_booster_scene()
+    #     self.init_pokedex_scene()
+    #     self.init_connexion_scene()
+    #     self.init_logged_scene()
 
     @Slot()
     def booster_start(self):

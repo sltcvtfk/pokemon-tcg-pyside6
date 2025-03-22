@@ -111,4 +111,4 @@ class Logged(QWidget) :
         contenu['lastConnected'] = ""
         
         with open(BDD, "w") as f:
-                json.dump(contenu, f , indent=6)
+            json.dump(contenu, f , indent=6)

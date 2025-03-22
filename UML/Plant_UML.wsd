@@ -10,7 +10,7 @@ class MyWindow {
     - scene_booster: Scene_Booster
     - scene_pokedex: Scene_Pokedex
     - scene_connexion: Scene_Connexion
-    - scene_logout: Scene_logout
+    - scene_logged: Scene_logged
     - toolbar: Toolbar
     - open_button: Button_Open
     - booster: Booster
@@ -23,9 +23,10 @@ class MyWindow {
     + __init__()
     + init_pokedex_scene()
     + init_connexion_scene()
-    + init_logout_scene()
+    + init_logged_scene()
     + init_toolbar()
     + init_booster_scene()
+    + update_toolbar()
     + pokedex_scene()
     + booster_scene()
     + connexion_scene()
@@ -62,7 +63,7 @@ class Scene_Connexion {
     + __init__()
 }
 
-class Scene_logout {
+class Scene_logged {
     - rect: QGraphicsRectItem
     + __init__()
 }
@@ -95,12 +96,19 @@ class Connexion {
     + verifLogin(): bool
 }
 
-class Logout {
+class Logged {
     - formLayout: QFormLayout
     - label: QLabel
     - disconnectButton: QPushButton
     + __init__()
     + disconnect()
+}
+
+class User {
+    - username: str
+    - nb_pokemon: int
+    - userType: bool
+    + __init__(user: str)
 }
 
 class Pokeinfo {
@@ -159,18 +167,20 @@ MyWindow  *--  Searchbar
 MyWindow  *--  Scene_Booster
 MyWindow  *--  Scene_Pokedex
 MyWindow  *--  Scene_Connexion
-MyWindow  *--  Scene_logout
+MyWindow  *--  Scene_logged
 MyWindow  *--  Toolbar
 MyWindow  *--  Button_Open
 MyWindow  *--  Booster
 MyWindow  *--  Connexion
-MyWindow  *--  Logout
+MyWindow  *--  Logged
 MyWindow  *--  addPokemon
+
+Logged *-- User
 
 Scene_Booster  --|>  QGraphicsScene
 Scene_Pokedex  --|>  QGraphicsScene
 Scene_Connexion  --|>  QGraphicsScene
-Scene_logout  --|>  QGraphicsScene
+Scene_logged  --|>  QGraphicsScene
 
 Button_Open  --|>  QPushButton
 addPokemon  --|>  QPushButton
@@ -180,7 +190,7 @@ Toolbar  --|>  QToolBar
 Searchbar  --|>  QWidget
 Pokeinfo  --|>  QWidget
 Connexion  --|>  QWidget
-Logout  --|>  QWidget
+Logged  --|>  QWidget
 
 Booster  *--  Pokemon
 
