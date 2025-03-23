@@ -9,12 +9,6 @@ from assets.toolbar import Toolbar
 from assets.pokeinfo import Pokeinfo
 from assets.pokedex import Pokedex
 
-with open(BDD, "r",encoding="utf8") as f:
-    data = json.load(f)
-
-
-
-
 class Scene_Booster(QGraphicsScene):
     def __init__(self, *args): 
         super().__init__(*args)
@@ -121,7 +115,9 @@ class MyWindow(QMainWindow):
         self.init_connexion_scene()
         self.init_logged_scene()
         
-        if data['lastConnected'] != "":
+        user = User();
+        
+        if user.username != "":
             self.booster_scene()
         else:
             self.connexion_scene()

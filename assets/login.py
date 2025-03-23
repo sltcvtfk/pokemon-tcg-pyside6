@@ -16,8 +16,8 @@ def restart():
 class User():
     """ Va permettre d'obtenir les informations de l'utilisateur"""
     
-    def __init__(self, user):
-        self.username = user
+    def __init__(self):
+        self.username = contenu["lastConnected"] if contenu["lastConnected"] != "" else ""
         self.nb_pokemon = len(contenu["users"][self.username]["pokedex"]) if self.username != "" else 0
         self.userType = contenu["users"][self.username]["isAdmin"] if self.username != "" else False
     
@@ -86,7 +86,7 @@ class Logged(QWidget) :
     
         with open(BDD) as f:
             self.contenu = json.load(f)
-        self.user = User(contenu["lastConnected"])
+        self.user = User()
     
         self.formLayout = QVBoxLayout()
         self.setLayout(self.formLayout)

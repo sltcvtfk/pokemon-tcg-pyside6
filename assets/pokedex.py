@@ -75,6 +75,10 @@ class Pokedex(QWidget):
     def update_page(self):
         """Met à jour la page actuelle du Pokédex"""
         
+        with open(BDD, "r", encoding="utf8") as f:
+            global bdd
+            bdd = json.load(f)
+        
         for i in reversed(range(self.pokemon_layout.count())):
             self.pokemon_layout.itemAt(i).widget().setParent(None)
             
@@ -102,7 +106,6 @@ class Pokedex(QWidget):
             button.setStyleSheet("background: transparent; border: none;") 
             button.left_click.connect(lambda poke=index: self.show_info_pokemon(poke))
             button.right_click.connect(lambda poke=index: self.show_pokemon(poke))
-            button.clicked.connect(lambda _, poke_id=index: self.show_pokemon(poke_id))
             self.pokemon_layout.addWidget(button, i // 4, i % 4)
             if self.mySearchBar.filtered == []:
                 buttons.append((button, index))
@@ -115,7 +118,8 @@ class Pokedex(QWidget):
     def update_pokedex_data(self):
         """Update the pokedex data"""
         with open(BDD, encoding="utf8") as file:
-            json.load(file)
+            global data
+            data = json.load(file)
         self.update_page()
         
     def load_pokemon_images(self, buttons):
@@ -159,6 +163,7 @@ class Pokedex(QWidget):
                     user['pokedex'].remove(int(res[index]["id"]))
             
                 json.dump(data, file, indent=2, ensure_ascii=False)
+            
             self.update_pokedex_data()
 
 
