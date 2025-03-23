@@ -59,9 +59,11 @@ class Pokedex(QWidget):
         self.button_layout = QHBoxLayout()
         self.button_layout.setContentsMargins(32, 0, 32, 120)
         self.prev_button = QPushButton("Précédent")
+        self.prev_button.setStyleSheet("QPushButton { border: 1px solid #bc545c; border-radius: 3px; text-align: center; background-color: #ebe8e8; } QPushButton:hover { background-color: #d6d6d6; } QPushButton:disabled { background-color: #7d7d7d; color: black; }")
         
         self.prev_button.clicked.connect(self.prev_page)
         self.next_button = QPushButton("Suivant")
+        self.next_button.setStyleSheet("QPushButton { border: 1px solid #bc545c; border-radius: 3px; text-align: center; background-color: #ebe8e8; } QPushButton:hover { background-color: #d6d6d6; } QPushButton:disabled { background-color: #7d7d7d; color: black; }")
         self.next_button.clicked.connect(self.next_page)
         
         self.button_layout.addWidget(self.prev_button)

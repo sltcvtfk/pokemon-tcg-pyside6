@@ -34,7 +34,8 @@ class Connexion(QWidget) :
         self.passwordLine = QLineEdit(self)
         self.passwordLine.setEchoMode(QLineEdit.Password)
         
-        self.loginButton = QPushButton("Login")
+        self.loginButton = QPushButton("Se connecter")
+        self.loginButton.setStyleSheet("QPushButton { border: 1px solid #bc545c; border-radius: 3px; text-align: center; background-color: #ebe8e8; } QPushButton:hover { background-color: #d6d6d6; } QPushButton:disabled { background-color: #7d7d7d; color: black; }")
         self.loginButton.clicked.connect(self.login)
         
         self.formLayout.addRow(username_label, self.userLine)
@@ -91,8 +92,10 @@ class Logged(QWidget):
         self.nbPokemonLabel = QLabel()
         self.userTypeLabel = QLabel()
         self.disconnectButton = QPushButton('Déconnexion')
+        self.disconnectButton.setStyleSheet("QPushButton { border: 1px solid #bc545c; border-radius: 3px; text-align: center; background-color: #ebe8e8; } QPushButton:hover { background-color: #d6d6d6; } QPushButton:disabled { background-color: #7d7d7d; color: black; }")
         self.disconnectButton.clicked.connect(self.disconnect)
         self.clearPokedexButton = QPushButton("Vider le pokedex")
+        self.clearPokedexButton.setStyleSheet("QPushButton { border: 1px solid #bc545c; border-radius: 3px; text-align: center; background-color: #ebe8e8; } QPushButton:hover { background-color: #d6d6d6; } QPushButton:disabled { background-color: #7d7d7d; color: black; }")
         self.clearPokedexButton.clicked.connect(self.clearPokedex)
 
         self.formLayout.addWidget(self.userLabel)

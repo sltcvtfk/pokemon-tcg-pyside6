@@ -198,6 +198,7 @@ class MyWindow(QMainWindow):
         """Initialise la scène de booster
         """
         self.open_button = Button_Open()
+        self.open_button.setStyleSheet("QPushButton { border: 1px solid #bc545c; border-radius: 3px; text-align: center; background-color: #ebe8e8; } QPushButton:hover { background-color: #d6d6d6; } QPushButton:disabled { background-color: #7d7d7d; color: black; }")
         self.open_button.setFixedSize(50, 50)
         self.open_button.setGeometry(175, 570, 50, 50)
 
