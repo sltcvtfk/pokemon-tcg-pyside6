@@ -55,7 +55,7 @@ python main.py
 
 ## Architecture du Projet
 
-![image](https://github.com/user-attachments/assets/9a849f30-9be5-4d4e-b2b4-4ac4045b001b)
+![image](https://github.com/user-attachments/assets/01529399-49a2-4a61-bf88-9727564594f5)
 
 ```
 📂 pokemon-tcg       
@@ -85,6 +85,7 @@ python main.py
 - **pokemon.json** Correction d'un problème avec le nom de certains pokémons
    - [Problème 1 (Pull Request Merged)](https://github.com/Purukitto/pokemon-data.json/pull/27/files)
    - [Problème 2 (Pull Request Open)](https://github.com/Purukitto/pokemon-data.json/pull/28/files)
+- **main.py** Obliger de relancer le fichier main.py à chaque connexion/déconnexion car sinon le Pokédex ne le prend pas en compte (soit il affiche rien, soit c'est forcément le pokédex de l'utilisateur sauvegardé après relancement)
 
 ## Auteurs et avancée du projet
 ![image](https://github.com/user-attachments/assets/22a21f22-6e72-403d-bcb1-084e4c5cc2d3)
