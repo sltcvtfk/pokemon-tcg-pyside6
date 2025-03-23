@@ -94,7 +94,7 @@ class Logged(QWidget) :
         self.userLabel = QLabel(f"Utilisateur : {self.user.username}")
         self.nbPokemonLabel = QLabel(f"Nombre de pokémon : {self.user.nb_pokemon}")
         self.nbPokemonLabel.repaint()
-        self.userTypeLabel = QLabel(f"Type d'utilisateur : {"Administrateur" if self.user.userType else "Membre"}")
+        self.userTypeLabel = QLabel(f"Type d'utilisateur : {'Administrateur' if self.user.userType else 'Membre'}")
         self.disconnectButton = QPushButton('Déconnexion')
         self.disconnectButton.clicked.connect(self.disconnect)
         
