@@ -13,6 +13,8 @@ with open(BDD, "r",encoding="utf8") as f:
     
 with open(POKEDEX, encoding="utf8") as f:
     res = json.load(f)
+    
+
 
 class addPokemon(QPushButton):
     right_click = Signal()
@@ -166,8 +168,6 @@ class Pokedex(QWidget):
             
             self.update_pokedex_data()
 
-
-    
     def prev_page(self):
         """Go to the previous page"""
         if self.current_page > 0:
