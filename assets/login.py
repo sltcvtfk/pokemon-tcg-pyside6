@@ -6,20 +6,17 @@ import json
 import hashlib
 
 with open(BDD) as f:
-    contenu = json.load(f)
-    
-def restart():
-    QCoreApplication.quit()
-    status = QProcess.startDetached(sys.executable, sys.argv)
-    print(status)
-    
+    contenu = json.load(f)    
 class User():
     """ Va permettre d'obtenir les informations de l'utilisateur"""
     
     def __init__(self):
+        with open(BDD) as f:
+            contenu = json.load(f)
         self.username = contenu["lastConnected"] if contenu["lastConnected"] != "" else ""
         self.nb_pokemon = len(contenu["users"][self.username]["pokedex"]) if self.username != "" else 0
         self.userType = contenu["users"][self.username]["isAdmin"] if self.username != "" else False
+        self.userPokedex = contenu["users"][self.username]["pokedex"] if self.username != "" else []
     
 class Connexion(QWidget) :
     """ Va permettre de se connecter"""
@@ -93,24 +90,41 @@ class Logged(QWidget):
         self.userLabel = QLabel()
         self.nbPokemonLabel = QLabel()
         self.userTypeLabel = QLabel()
-        self.disconnectButton = QPushButton()
+        self.disconnectButton = QPushButton('Déconnexion')
         self.disconnectButton.clicked.connect(self.disconnect)
+        self.clearPokedexButton = QPushButton("Vider le pokedex")
+        self.clearPokedexButton.clicked.connect(self.clearPokedex)
 
         self.formLayout.addWidget(self.userLabel)
         self.formLayout.addWidget(self.nbPokemonLabel)
         self.formLayout.addWidget(self.userTypeLabel)
         self.formLayout.addStretch()
+        self.formLayout.addWidget(self.clearPokedexButton)
         self.formLayout.addWidget(self.disconnectButton)
 
         self.update_logged()
 
     def update_logged(self):
         """Met à jour l'interface utilisateur"""
+
         self.user = User()
         self.userLabel.setText(f"Utilisateur : {self.user.username}")
+        self.user.nb_pokemon = len(self.user.userPokedex)
         self.nbPokemonLabel.setText(f"Nombre de pokémon : {self.user.nb_pokemon}")
         self.userTypeLabel.setText(f"Type d'utilisateur : {'Administrateur' if self.user.userType else 'Membre'}")
-        self.disconnectButton.setText('Déconnexion')
+        
+    def clearPokedex(self):
+        """Vide le pokedex de l'utilisateur"""
+        contenu["users"][self.user.username]["pokedex"] = []
+        self.user.nb_pokemon = 0
+        with open(BDD, "w") as f:
+            json.dump(contenu, f, indent=6)
+        
+        self.update_logged()
+        msg = QMessageBox()
+        msg.setText("Votre pokedex a bien été vidé")
+        msg.setWindowTitle(f"{self.user.username}")
+        msg.exec()
 
     def disconnect(self):
         """Déconnecte l'utilisateur et met à jour l'interface"""

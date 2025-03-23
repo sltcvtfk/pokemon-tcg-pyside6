@@ -230,6 +230,7 @@ class MyWindow(QMainWindow):
         if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['lastConnected'] != ""): 
             self.update_toolbar()
             self.logged.update_logged()
+            
             self.my_scenes.setCurrentIndex(3)
 
 
