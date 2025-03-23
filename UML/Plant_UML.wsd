@@ -6,7 +6,6 @@ QMainWindow  <|--  MyWindow
 
 class MyWindow {
     - my_scenes: QStackedWidget
-    - searchBar: Searchbar
     - scene_booster: Scene_Booster
     - scene_pokedex: Scene_Pokedex
     - scene_connexion: Scene_Connexion
@@ -17,9 +16,6 @@ class MyWindow {
     - boosterPixmap: QGraphicsPixmapItem
     - carte: QGraphicsPixmapItem
     - current_page: int
-    - pokemon_per_page: int
-    - total_pokemon: int
-    - num_pages: int
     + __init__()
     + init_pokedex_scene()
     + init_connexion_scene()
@@ -31,14 +27,6 @@ class MyWindow {
     + booster_scene()
     + connexion_scene()
     + booster_start()
-    + update_pokedex_data()
-    + pages()
-    + update_page()
-    + load_pokemon_images(buttons: list)
-    + show_info_pokemon(index: int)
-    + show_pokemon(index: int)
-    + prev_page()
-    + next_page()
 }
 
 class addPokemon {
@@ -46,6 +34,32 @@ class addPokemon {
     + left_click: Signal
     + __init__()
     + mousePressEvent(e: QMouseEvent)
+}
+
+class Pokedex {
+    - layout: QGridLayout
+    - mySearchBar: Searchbar
+    - current_page: int
+    - pokemon_per_page: int
+    - total_pokemon: int
+    - num_pages: int
+    - page_widget: QWidget
+    - page_layout: QVBoxLayout
+    - pokemon_layout: QGridLayout
+    - button_layout: QHBoxLayout
+    - prev_button: QPushButton
+    - next_button: QPushButton
+    - last_page: int
+    - pokemon: Pokeinfo
+    + __init__()
+    + pages
+    + update_page
+    + update_pokedex_data
+    + load_pokemon_images(buttons: list)
+    + show_info_pokemon(index: int)
+    + show_pokemon(index: int)
+    + prev_page()
+    + next_page()
 }
 
 class Scene_Booster {
@@ -163,7 +177,7 @@ class Toolbar {
     + __init__()
 }
 
-MyWindow  *--  Searchbar
+
 MyWindow  *--  Scene_Booster
 MyWindow  *--  Scene_Pokedex
 MyWindow  *--  Scene_Connexion
@@ -173,7 +187,9 @@ MyWindow  *--  Button_Open
 MyWindow  *--  Booster
 MyWindow  *--  Connexion
 MyWindow  *--  Logged
-MyWindow  *--  addPokemon
+MyWindow  *--  Pokedex
+
+
 
 Logged *-- User
 
@@ -191,10 +207,16 @@ Searchbar  --|>  QWidget
 Pokeinfo  --|>  QWidget
 Connexion  --|>  QWidget
 Logged  --|>  QWidget
+Pokedex  --|>  QWidget	
+
+
+Pokedex  *-- addPokemon
+Pokedex  *-- Pokeinfo
+Pokedex  *-- Searchbar
+
 
 Booster  *--  Pokemon
-
-Pokeinfo  *--  Pokemon
+Pokemon *--  Pokeinfo
 
 Toolbar  *--  MyWindow
 

@@ -4,7 +4,6 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import *
 from assets.booster import *
 from assets.constante import *
-from assets.searchbar import *
 from assets.login import *
 from assets.toolbar import Toolbar
 from assets.pokeinfo import Pokeinfo
@@ -105,7 +104,6 @@ class MyWindow(QMainWindow):
         self.my_scenes = QStackedWidget()
         self.my_scenes.setGeometry(0, 0, 400, 700)
         self.setCentralWidget(self.my_scenes)
-        self.searchBar = Searchbar()
         
         self.scene_booster = Scene_Booster(0,0,400,700) # 0,0,400,700
         self.scene_pokedex = Scene_Pokedex(0,0,400,700)	
@@ -128,16 +126,13 @@ class MyWindow(QMainWindow):
         else:
             self.connexion_scene()
         
-        
-        
     def init_pokedex_scene(self):
         """Initialise the pokedex scene
         """
         self.pokedex = Pokedex()
         self.scene_pokedex.addWidget(self.pokedex)
         self.scene_pokedex.addWidget(self.pokedex.mySearchBar)
-        
-
+    
     def update_bdd(self):
         """Met à jour la base de données
         """
@@ -291,12 +286,6 @@ class MyWindow(QMainWindow):
             self.scene_booster.removeItem(self.carte)
             self.carte = self.scene_booster.addPixmap(Booster().creation_carte_pokemon(random.randint(FIRST_POKEMON, LAST_POKEMON)))
             self.carte.setPos(50,50)
-
-    def update_pokedex_data(self):
-        """Update the pokedex data"""
-        self.update_bdd()
-        self.pokedex.update_page()
-            
 
 if __name__ == "__main__":
     app = QApplication([])

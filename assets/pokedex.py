@@ -41,7 +41,7 @@ class Pokedex(QWidget):
         """Affiche les pokemons dans le pokedex"""
         self.current_page = 0
         self.pokemon_per_page = 20
-        self.total_pokemon = 809
+        self.total_pokemon = LAST_POKEMON
         self.num_pages = (LAST_POKEMON // self.pokemon_per_page) + (1 if LAST_POKEMON % self.pokemon_per_page != 0 else 0)
         
         self.page_widget = QWidget()
