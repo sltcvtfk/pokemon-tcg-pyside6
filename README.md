@@ -54,7 +54,7 @@ python main.py
 
 
 ## Architecture du Projet
-
+(à mettre à jour)
 ![image](https://github.com/user-attachments/assets/376700a1-dd2e-441b-b643-8e6ae4c1fe15)
 
 ```
@@ -85,7 +85,6 @@ python main.py
 - **pokemon.json** Correction d'un problème avec le nom de certains pokémons
    - [Problème 1 (Pull Request Merged)](https://github.com/Purukitto/pokemon-data.json/pull/27/files)
    - [Problème 2 (Pull Request Open)](https://github.com/Purukitto/pokemon-data.json/pull/28/files)
-- **main.py** Obliger de relancer le fichier main.py à chaque connexion/déconnexion car la page de connexion ne se met que sur le premier utilisateur connecté au lancement de l'application
   
 ## Auteurs et avancée du projet
 ![image](https://github.com/user-attachments/assets/22a21f22-6e72-403d-bcb1-084e4c5cc2d3)
@@ -94,13 +93,13 @@ python main.py
 **STAN SALOMON** 
 </span> || [**@sltcvtfk**](https://github.com/sltcvtfk)
 
-**Tâches** :  Je me suis occupé surtout de la partie graphique, avec la MainWindow, la scène Booster, avec l'affichage des cartes, avec le nom du pokémon, son type, ses "HP", sa taille, son poids, sa faiblesse, et sa sous évolution, s'il en avait une. et "Pokédex". J'ai aussi fait la Toolbar. J'ai aussi fait la partie back-end, avec l'ajout des pokémons dans le pokédex de l'utilisateur à chaque ouverte de booster.
+**Tâches** :  Je me suis occupé surtout de la partie graphique, avec la MainWindow, la scène Booster, avec l'affichage des cartes, avec le nom du pokémon, son type, ses "HP", sa taille, son poids, sa faiblesse, et sa sous évolution, s'il en avait une. La scène "Pokédex", qui affiche les pokémons que l'utilisateur possède. J'ai aussi fait la Toolbar. J'ai aussi fait la partie back-end, avec l'ajout des pokémons dans le pokédex de l'utilisateur à chaque ouverte de booster, l'option vider le pokédex, l'affiche des informations du Pokémon selectionné dans le Pokédex. 
 
 -<span style="color:orange">
 **EVAN CHAMAND**
 </span> || [**@EvanLeGoat**](https://github.com/EvanLeGoat) 
 
-**Tâches** : Je me suis occupé de la documention(Plant_UML, Gantt_UML, README.md, etc ...), j'ai fait un peu de code aussi en rapport avec la base de données pour la liaison au mais celà n'a pas été utilisé <span style="color:orange">
+**Tâches** : Je me suis occupé de la documention(Plant_UML, Gantt_UML, README.md, etc ...), j'ai fait un peu de code aussi en rapport avec la base de données pour la liaison mais celà n'a pas été utilisé <span style="color:orange">
 **Main**
 </span>.
 
