@@ -1,49 +1,51 @@
 {
-  "lastConnected": "Stan",
-  "users": {
-    "Stan": {
-      "password": "d404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db",
-      "isAdmin": true,
-      "pokedex": [
-        14,
-        739,
-        333,
-        50
-      ]
-    },
-    "Gregouz": {
-      "password": "2c438800b1837ad2561f0013da0e150e558f68fae5bc533d26e5580d0ba4ff1549be2904328f6c9a399a01df9fc336041d011e4e7568cede9ec02dd30ced265c",
-      "isAdmin": false,
-      "pokedex": [
-        1,
-        3,
-        151,
-        213,
-        198,
-        458,
-        246,
-        587,
-        665,
-        529,
-        136,
-        189,
-        439,
-        139,
-        483,
-        210,
-        158,
-        762,
-        597,
-        248,
-        126,
-        631,
-        445,
-        60,
-        178,
-        88,
-        400,
-        290
-      ]
-    }
-  }
+      "lastConnected": "Stan",
+      "users": {
+            "Stan": {
+                  "password": "d404559f602eab6fd602ac7680dacbfaadd13630335e951f097af3900e9de176b6db28512f2e000b9d04fba5133e8b1c6e8df59db3a8ab9d60be4b97cc9e81db",
+                  "isAdmin": true,
+                  "pokedex": [
+                        14,
+                        739,
+                        333,
+                        50,
+                        41,
+                        28
+                  ]
+            },
+            "Gregouz": {
+                  "password": "2c438800b1837ad2561f0013da0e150e558f68fae5bc533d26e5580d0ba4ff1549be2904328f6c9a399a01df9fc336041d011e4e7568cede9ec02dd30ced265c",
+                  "isAdmin": false,
+                  "pokedex": [
+                        1,
+                        3,
+                        151,
+                        213,
+                        198,
+                        458,
+                        246,
+                        587,
+                        665,
+                        529,
+                        136,
+                        189,
+                        439,
+                        139,
+                        483,
+                        210,
+                        158,
+                        762,
+                        597,
+                        248,
+                        126,
+                        631,
+                        445,
+                        60,
+                        178,
+                        88,
+                        400,
+                        290
+                  ]
+            }
+      }
 }

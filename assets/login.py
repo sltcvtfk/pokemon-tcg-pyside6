@@ -77,38 +77,43 @@ class Connexion(QWidget) :
                 answer = True
         return answer
 
-class Logged(QWidget) :
-    """ Va permettre de se déconnecter"""
-    
-    
-    def __init__(self, parent=None) :
+class Logged(QWidget):
+    """ Va permettre d'afficher la page de l'utilisateur connecté"""
+
+    def __init__(self, parent=None):
         super().__init__(parent)
-    
-        with open(BDD) as f:
-            self.contenu = json.load(f)
         self.user = User()
-    
+        self.init_logged()
+
+    def init_logged(self):
+        """Initialise l'interface utilisateur"""
         self.formLayout = QVBoxLayout()
         self.setLayout(self.formLayout)
-    
-        self.userLabel = QLabel(f"Utilisateur : {self.user.username}")
-        self.nbPokemonLabel = QLabel(f"Nombre de pokémon : {self.user.nb_pokemon}")
-        self.nbPokemonLabel.repaint()
-        self.userTypeLabel = QLabel(f"Type d'utilisateur : {'Administrateur' if self.user.userType else 'Membre'}")
-        self.disconnectButton = QPushButton('Déconnexion')
+
+        self.userLabel = QLabel()
+        self.nbPokemonLabel = QLabel()
+        self.userTypeLabel = QLabel()
+        self.disconnectButton = QPushButton()
         self.disconnectButton.clicked.connect(self.disconnect)
-        
+
         self.formLayout.addWidget(self.userLabel)
-        self.formLayout.addWidget(self.nbPokemonLabel) 
+        self.formLayout.addWidget(self.nbPokemonLabel)
         self.formLayout.addWidget(self.userTypeLabel)
         self.formLayout.addStretch()
         self.formLayout.addWidget(self.disconnectButton)
-        
-        self.setLayout(self.formLayout)
-        
-        
-    def disconnect(self) :
+
+        self.update_logged()
+
+    def update_logged(self):
+        """Met à jour l'interface utilisateur"""
+        self.user = User()
+        self.userLabel.setText(f"Utilisateur : {self.user.username}")
+        self.nbPokemonLabel.setText(f"Nombre de pokémon : {self.user.nb_pokemon}")
+        self.userTypeLabel.setText(f"Type d'utilisateur : {'Administrateur' if self.user.userType else 'Membre'}")
+        self.disconnectButton.setText('Déconnexion')
+
+    def disconnect(self):
+        """Déconnecte l'utilisateur et met à jour l'interface"""
         contenu['lastConnected'] = ""
-        
         with open(BDD, "w") as f:
-            json.dump(contenu, f , indent=6)
+            json.dump(contenu, f, indent=6)

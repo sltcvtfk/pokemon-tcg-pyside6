@@ -68,7 +68,7 @@ class Button_Open(QPushButton):
     def _click(self):
         """
         Returns:
-            int: the number of times the button has been clicked
+            int: Le nombre de fois que le bouton a été cliqué
         """
         self.compte += 1
         return self.compte
@@ -93,6 +93,7 @@ class MyWindow(QMainWindow):
         
         self.setWindowIcon(QIcon("img/pokeball_icon.png"))
         self.setWindowTitle("Pokémon TCG")
+        
         
         
         self.my_scenes = QStackedWidget()
@@ -200,7 +201,6 @@ class MyWindow(QMainWindow):
         self.open_button.setFixedSize(50, 50)
         self.open_button.setGeometry(175, 570, 50, 50)
 
-
         self.booster = Booster()
         self.boosterPixmap = self.scene_booster.addPixmap(self.booster.affiche_booster())
         self.boosterPixmap.setPos(60,50)
@@ -218,22 +218,18 @@ class MyWindow(QMainWindow):
     def booster_scene(self):
         """Change n'importe quelle scène en scène de booster
         """
+        self.open_button.compte = 0
         self.my_scenes.setCurrentIndex(0)
  
     def connexion_scene(self):
         """Change n'importe quelle scène en scène de connexion
         """
-        
-        with open(BDD, "r", encoding="utf8") as f:
-            global bdd
-            bdd = json.load(f)
-        
         if (self.logged.disconnectButton.clicked) or (bdd['lastConnected'] == "" ):  
             self.update_toolbar()
-            self.repaint()
             self.my_scenes.setCurrentIndex(2)
         if (self.connexion.loginButton.clicked.connect(self.connexion.verifLogin) == True) or (bdd['lastConnected'] != ""): 
             self.update_toolbar()
+            self.logged.update_logged()
             self.my_scenes.setCurrentIndex(3)
 
 
