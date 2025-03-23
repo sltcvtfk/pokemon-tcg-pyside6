@@ -85,8 +85,8 @@ python main.py
 - **pokemon.json** Correction d'un problème avec le nom de certains pokémons
    - [Problème 1 (Pull Request Merged)](https://github.com/Purukitto/pokemon-data.json/pull/27/files)
    - [Problème 2 (Pull Request Open)](https://github.com/Purukitto/pokemon-data.json/pull/28/files)
-- **main.py** Obliger de relancer le fichier main.py à chaque connexion/déconnexion car sinon le Pokédex ne le prend pas en compte (soit il affiche rien, soit c'est forcément le pokédex de l'utilisateur sauvegardé après relancement)
-
+- **main.py** Obliger de relancer le fichier main.py à chaque connexion/déconnexion car la page de connexion ne se met que sur le premier utilisateur connecté au lancement de l'application
+  
 ## Auteurs et avancée du projet
 ![image](https://github.com/user-attachments/assets/22a21f22-6e72-403d-bcb1-084e4c5cc2d3)
 
