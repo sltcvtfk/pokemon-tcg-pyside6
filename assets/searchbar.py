@@ -85,7 +85,6 @@ class Searchbar(QWidget) :
         text = text.lower() 
        
 
-        print(text)
         #self.lineEdit.setAlignment(Qt.AlignmentFlag.AlignLeft)
         
         self.filtered = []
@@ -103,21 +102,9 @@ class Searchbar(QWidget) :
                 #print(self.filtered)
             else : 
                 p_name_fr = [pokemon['name']['french'].lower()]
-                """  for poke_en in p_name_en :
-                    if poke_en.startswith(text) :
-                        self.filtered.append(pokemon['id']) """
                 for poke_fr in p_name_fr: 
                     if poke_fr.startswith(text):
                         self.filtered.append(pokemon['id'])
-
-
-    # def placeholderCenter(self):
-    #     self.anim = QPropertyAnimation(self.lineEdit.text, b"pos")
-    #     self.anim.setEasingCurve(QEasingCurve.InOutCubic)
-    #     self.anim.setEndValue(QPoint(0, 500))
-    #     self.anim.setDuration(4000)
-    #     self.anim.start()
-                    
                         
                             
                         

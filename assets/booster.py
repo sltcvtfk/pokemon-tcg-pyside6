@@ -158,12 +158,3 @@ class Booster():
             img = img.scaled(300, 510, Qt.AspectRatioMode.KeepAspectRatio)
             pixmap = QPixmap.fromImage(img)
             return pixmap
-        
-    # def start_booster(self):
-    #     for i in range(6):
-    #         self.add_to_list()
-    #     return self.pokemon  
-    
-        
-# def start_booster():
-

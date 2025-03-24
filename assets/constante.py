@@ -86,8 +86,6 @@ STAGE2_CARD_DICT = {
     "Ghost": "img/card/stage2/Psychic.png",
 }
 
-
-
 BASIC_CARD_DICT = {
     "Fighting": "img/card/basic/Fighting.png",
     "Dragon": "img/card/basic/Dragon.png",

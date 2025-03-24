@@ -18,15 +18,15 @@ class Pokeinfo(QWidget):
         self.update_data()
         self.pokemon = Pokemon(pokedex_id)
         userConnected = data["users"][data["lastConnected"]]["pokedex"]
-        self.french_name = f"{self.pokemon.french_name()} ({self.pokemon.pokedex_id})" if pokedex_id in userConnected else "???";
-        self.type = f"{self.pokemon.his_type()}" if pokedex_id in userConnected else "???";
+        self.french_name = f"{self.pokemon.french_name()} ({self.pokemon.pokedex_id})" if pokedex_id in userConnected else f"??? ({self.pokemon.pokedex_id})";
+        self.type = f"{ENGLISH_TYPE_TO_FRENCH_DICT[self.pokemon.his_type()]}" if pokedex_id in userConnected else "???";
         self.hgt = f"{self.pokemon.height()}" if pokedex_id in userConnected else "??? m";
         self.wgt = f"{self.pokemon.weight()}" if pokedex_id in userConnected else "??? kg";
         self.hp = f"{self.pokemon.hp()}" if pokedex_id in userConnected else "???";
         self.gen = f"{self.pokemon.generation()}"
         self.weakness = f"Type {ENGLISH_TYPE_TO_FRENCH_DICT[self.pokemon.weakness()].lower()}" if pokedex_id in userConnected else "???"
                 
-        self.setWindowTitle(self.pokemon.french_name())
+        self.setWindowTitle(self.pokemon.french_name() if pokedex_id in userConnected else "???")
         x = requests.get(self.pokemon.image_links()["thumbnail"], stream=True)
         image = QImage()
         image.loadFromData(x.content)

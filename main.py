@@ -191,9 +191,6 @@ class MyWindow(QMainWindow):
         self.update_bdd()
         self.init_toolbar()
         
-        
-
-    
     def init_booster_scene(self):
         """Initialise la scène de booster
         """
@@ -233,7 +230,6 @@ class MyWindow(QMainWindow):
             self.logged.update_logged()
             
             self.my_scenes.setCurrentIndex(3)
-
 
     @Slot()
     def booster_start(self):
