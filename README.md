@@ -100,8 +100,8 @@ python main.py
 **EVAN CHAMAND**
 </span> || [**@EvanLeGoat**](https://github.com/EvanLeGoat) 
 
-**Tâches** : Je me suis occupé de la documention(Plant_UML, Gantt_UML, README.md, etc ...), j'ai fait un peu de code aussi en rapport avec la base de données pour la liaison mais celà n'a pas été utilisé <span style="color:orange">
-**Main**
+-<span style="color:orange">
+**Tâches** : Je me suis occupé de la documention(Plant_UML, Gantt_UML, README.md, etc ...), j'ai fait un peu de code aussi en rapport avec la base de données pour la liaison mais celà n'a pas été utilisé 
 </span>.
 
 -<span style="color:green">
