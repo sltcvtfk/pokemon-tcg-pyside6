@@ -6,7 +6,7 @@ Ce projet est une application graphique basée sur PySide6 permettant de simuler
 
 ## Fonctionnalités
 
-- **Affichage du Pokédex** : Recherche de Pokémon par nom, type, génération ou ID.
+- **Affichage du Pokédex** : Recherche de Pokémon par nom et type.
 - **Ouverture de boosters** : Simulation de l'ouverture d'un booster contenant plusieurs cartes Pokémon.
 - **Interface utilisateur** : Navigation fluide entre les différentes scènes via une barre d'outils.
 - **Option administrateur** : Si l'utilisateur est administrateur, un clic droit sur un Pokémon du Pokédex lui permet de l'ajouter à son propre Pokédex.
