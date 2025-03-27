@@ -101,7 +101,7 @@ python main.py
 </span> || [**@EvanLeGoat**](https://github.com/EvanLeGoat) 
 
 -<span style="color:orange">
-**Tâches** : Je me suis occupé de la documention(Plant_UML, Gantt_UML, README.md, etc ...), j'ai fait un peu de code aussi en rapport avec la base de données pour la liaison mais celà n'a pas été utilisé 
+**Tâches** : Je me suis occupé de la documention(Plant_UML, Gantt_UML, README.md, etc ...), j'ai fait un peu de code aussi en rapport avec la base de données pour la liaison mais celà n'a pas été utilisé. J'ai fait la partie du clearpokedex qui a été utilisée
 </span>.
 
 -<span style="color:green">
