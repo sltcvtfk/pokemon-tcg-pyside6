@@ -94,7 +94,7 @@ python main.py
 **STAN SALOMON** 
 </span> || [**@sltcvtfk**](https://github.com/sltcvtfk)
 
-**Tâches** :  Je me suis occupé surtout de la partie graphique, avec la MainWindow, la scène Booster, avec l'affichage des cartes, avec le nom du pokémon, son type, ses "HP", sa taille, son poids, sa faiblesse, et sa sous évolution, s'il en avait une. La scène "Pokédex", qui affiche les pokémons que l'utilisateur possède. J'ai aussi fait la Toolbar. J'ai aussi fait la partie back-end, avec l'ajout des pokémons dans le pokédex de l'utilisateur à chaque ouverte de booster, l'option vider le pokédex, l'affiche des informations du Pokémon selectionné dans le Pokédex. 
+**Tâches** :  Je me suis occupé surtout de la partie graphique, avec la MainWindow, la scène Booster, avec l'affichage des cartes, avec le nom du pokémon, son type, ses "HP", sa taille, son poids, sa faiblesse, et sa sous évolution, s'il en avait une. La scène "Pokédex", qui affiche les pokémons que l'utilisateur possède. J'ai aussi fait la Toolbar. J'ai aussi fait la partie back-end, avec l'ajout des pokémons dans le pokédex de l'utilisateur à chaque ouverte de booster, l'affiche des informations du Pokémon selectionné dans le Pokédex. 
 
 -<span style="color:orange">
 **EVAN CHAMAND**
