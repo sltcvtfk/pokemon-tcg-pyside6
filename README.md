@@ -84,6 +84,8 @@ python main.py
 
 ## Informations supplémentaires
 
+- Basé sur le JSON du projet de [Purukitto](https://github.com/Purukitto/pokemon-data.json)
+
 - **pokemon.json** Correction d'un problème avec le nom de certains pokémons
    - [Problème 1 (Pull Request Merged)](https://github.com/Purukitto/pokemon-data.json/pull/27/files)
    - [Problème 2 (Pull Request Open)](https://github.com/Purukitto/pokemon-data.json/pull/28/files)
