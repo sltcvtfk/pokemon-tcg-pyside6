@@ -55,7 +55,7 @@ python main.py
 
 ## Architecture du Projet
 
-![image](https://github.com/user-attachments/assets/484b7499-900f-46f2-b409-341d970e47a6)
+![image](https://github.com/user-attachments/assets/bbf6e230-27bc-4e2b-abd4-fb50297c2dd4)
 
 
 ```
